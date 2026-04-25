@@ -65,11 +65,11 @@ export default function Contact() {
               <div className="contact__info">
                 <div className="contact__info-item">
                   <span className="contact__info-label">Email</span>
-                  <a href="mailto:hello@lawarnaaree.com" className="contact__info-value">hello@lawarnaaree.com</a>
+                  <a href="mailto:hello@lawarnaaree.com" className="contact__info-value">lawarnaaree@gmail.com</a>
                 </div>
                 <div className="contact__info-item">
                   <span className="contact__info-label">Location</span>
-                  <span className="contact__info-value">Nepal 🇳🇵</span>
+                  <span className="contact__info-value">Kathmandu, 🇳🇵</span>
                 </div>
               </div>
 
@@ -77,7 +77,7 @@ export default function Contact() {
                 <span className="contact__info-label">Follow Me</span>
                 <div className="contact__social-links">
                   <a href="https://github.com/lawarnaaree" target="_blank" rel="noopener noreferrer">GitHub</a>
-                  <a href="https://linkedin.com/in/lawarnaaree" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                  <a href="https://www.linkedin.com/in/lawarna-aree-032180317/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                   <a href="https://x.com/lawarnaaree" target="_blank" rel="noopener noreferrer">X / Twitter</a>
                 </div>
               </div>
