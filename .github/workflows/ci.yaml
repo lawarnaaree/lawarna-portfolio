@@ -1,0 +1,48 @@
+#1 naming the workflow
+name: CI Pipeline
+
+#2 logic to tell when should this workflow should run
+on:
+  push:
+    #run when code is pushed to these branches
+    branch: [dev, staging]
+ 
+  pull_request:
+    #run when a PR targets these branches
+    branches: [dev, staging, main]
+
+#3 commanding what to do [JOBS]
+jobs:
+  #each job runs on a fresh VM
+  lint-and-build:
+    runs-on: ubuntu-latest
+
+  #steps to follow by individual command within the job
+  steps:
+    # step 1: downloading the code into VM
+    - name: Checkout code
+      #"uses" is used to use pre-built actions created by GitHub
+      uses: actions/checkout@v4
+
+    # step 2: installing Node.js
+    - name: Setup Node.js
+      uses: action/setup-node@v4
+      with:
+        node-version: '20'
+
+    # step 3: Install pnpm 
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+
+    # step 4: Install dependencies
+    - name: Install dependencies
+      #frozen-lockfiles is used to extract versions from lock file
+      uses: pnpm install --frozen-lockfile
+  
+    # step 5: Check code quality
+    - name: Lint 
+      run: pnpm lint
+
+    # step 6: Build all apps
+    - name: Build
+      run: pnpm build
