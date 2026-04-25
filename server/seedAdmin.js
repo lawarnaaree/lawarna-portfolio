@@ -25,7 +25,7 @@ const seedAdmin = async () => {
         }
 
         await pool.query(
-            'INSERT INTO admin(name, email, password) VALUES (?,?,?',
+            'INSERT INTO admins(name, email, password_hash) VALUES (?,?,?)',
             [name, email, hashedPassword]
         );
 
