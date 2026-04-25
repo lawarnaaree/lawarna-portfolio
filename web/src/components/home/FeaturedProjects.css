@@ -1,0 +1,148 @@
+.fp__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--s-3xl);
+}
+
+.fp__title {
+  font-family: var(--f-heading);
+  font-size: var(--fs-3xl);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  opacity: 0;
+}
+
+.fp__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-sm);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--c-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color 0.3s, gap 0.3s var(--ease-out);
+}
+
+.fp__view-all:hover {
+  color: var(--c-accent);
+  gap: var(--s-md);
+}
+
+/* Asymmetric Grid - Chris Macari Style */
+.fp__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--s-gutter);
+}
+
+.fp__card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  will-change: clip-path;
+}
+
+.fp__card--large {
+  grid-column: span 7;
+}
+
+.fp__card--small {
+  grid-column: span 5;
+}
+
+.fp__card--wide {
+  grid-column: span 12;
+}
+
+.fp__card--medium {
+  grid-column: span 5;
+  grid-column-start: 8;
+}
+
+/* Card Image */
+.fp__card-image {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.fp__card--small .fp__card-image {
+  aspect-ratio: 4 / 5;
+}
+
+.fp__card--wide .fp__card-image {
+  aspect-ratio: 21 / 9;
+}
+
+.fp__card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out);
+}
+
+.fp__card:hover .fp__card-image img {
+  transform: scale(1.05);
+}
+
+/* Card Info */
+.fp__card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--s-xl);
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.5s var(--ease-out), opacity 0.5s;
+}
+
+.fp__card:hover .fp__card-info {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.fp__card-title {
+  font-family: var(--f-heading);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  margin-bottom: var(--s-sm);
+}
+
+.fp__card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-sm);
+}
+
+.fp__tag {
+  font-size: var(--fs-xs);
+  padding: 3px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--r-full);
+  color: var(--c-text-muted);
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 768px) {
+  .fp__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-md);
+  }
+  .fp__grid {
+    grid-template-columns: 1fr;
+  }
+  .fp__card--large,
+  .fp__card--small,
+  .fp__card--wide,
+  .fp__card--medium {
+    grid-column: span 1;
+  }
+  .fp__card-info {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

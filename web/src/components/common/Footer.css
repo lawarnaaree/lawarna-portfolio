@@ -1,0 +1,111 @@
+.footer {
+  border-top: 1px solid var(--c-border);
+  padding-bottom: var(--s-2xl);
+}
+
+/* CTA Section */
+.footer__cta {
+  padding: var(--s-section) 0;
+  text-align: center;
+}
+
+.footer__cta-label {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--s-lg);
+}
+
+.footer__cta-heading {
+  font-family: var(--f-heading);
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  line-height: 0.95;
+  color: var(--c-text);
+  display: inline-block;
+  transition: color 0.4s;
+}
+
+.footer__cta-heading:hover {
+  color: var(--c-accent);
+}
+
+.footer__cta-dot {
+  color: var(--c-accent);
+}
+
+/* Grid */
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-2xl);
+  padding: var(--s-3xl) 0;
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-sm);
+}
+
+.footer__col-title {
+  font-family: var(--f-body);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--s-md);
+}
+
+.footer__link {
+  font-family: var(--f-heading);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  color: var(--c-text);
+  transition: color 0.3s, transform 0.3s;
+  display: inline-block;
+}
+
+.footer__link:hover {
+  color: var(--c-accent);
+  transform: translateX(4px);
+}
+
+.footer__location {
+  font-size: var(--fs-base);
+  color: var(--c-text-muted);
+  margin-top: var(--s-sm);
+}
+
+/* Bottom */
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--s-xl);
+}
+
+.footer__copy,
+.footer__built {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+@media (max-width: 768px) {
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-xl);
+  }
+  .footer__cta-heading {
+    font-size: var(--fs-3xl);
+  }
+  .footer__bottom {
+    flex-direction: column;
+    gap: var(--s-sm);
+    text-align: center;
+  }
+}

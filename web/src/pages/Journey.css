@@ -1,0 +1,135 @@
+.journey-page { padding-top: var(--nav-height); }
+
+.journey__heading {
+  font-family: var(--f-heading);
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  opacity: 0;
+}
+
+.journey__subtitle {
+  font-size: var(--fs-md);
+  color: var(--c-text-muted);
+  margin-top: var(--s-md);
+}
+
+/* Timeline */
+.journey__timeline {
+  position: relative;
+}
+
+.journey__line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--c-border);
+  transform: translateX(-50%);
+}
+
+.journey__line-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--c-accent);
+  transform-origin: top;
+}
+
+.journey__entries {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3xl);
+}
+
+/* Card */
+.journey__card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-xl);
+  width: 45%;
+  opacity: 0;
+}
+
+.journey__card--left {
+  align-self: flex-start;
+  text-align: right;
+  flex-direction: row-reverse;
+}
+
+.journey__card--right {
+  align-self: flex-end;
+}
+
+.journey__card-dot {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  background: var(--c-bg-card);
+  border: 2px solid var(--c-border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.journey__card-content {
+  padding: var(--s-xl);
+  background: var(--c-bg-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  transition: border-color 0.3s;
+}
+
+.journey__card-content:hover {
+  border-color: var(--c-accent);
+}
+
+.journey__card-period {
+  font-size: var(--fs-xs);
+  color: var(--c-accent);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.journey__card-title {
+  font-family: var(--f-heading);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  margin-top: var(--s-xs);
+}
+
+.journey__card-org {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  margin-top: 2px;
+}
+
+.journey__card-desc {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  line-height: 1.7;
+  margin-top: var(--s-sm);
+}
+
+@media (max-width: 768px) {
+  .journey__line { left: 24px; }
+  .journey__card {
+    width: 100%;
+    padding-left: 60px;
+    flex-direction: row !important;
+    text-align: left !important;
+    align-self: stretch !important;
+  }
+  .journey__card-dot {
+    position: absolute;
+    left: 0;
+  }
+}
