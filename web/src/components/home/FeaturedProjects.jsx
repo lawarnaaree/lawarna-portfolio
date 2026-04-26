@@ -44,7 +44,7 @@ export default function FeaturedProjects() {
       )
 
       // Staggered card reveals with clipPath
-      gsap.utils.toArray('.fp__card').forEach((card, i) => {
+      gsap.utils.toArray('.fp__card').forEach((card) => {
         gsap.fromTo(card,
           { clipPath: 'inset(100% 0 0 0)', y: 40 },
           {

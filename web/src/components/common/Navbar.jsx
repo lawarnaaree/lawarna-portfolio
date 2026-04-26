@@ -23,10 +23,12 @@ export default function Navbar() {
   const location = useLocation()
   const lastScroll = useRef(0)
 
-  // Close menu on route change
-  useEffect(() => {
+  // Close menu on route change (Adjusting state during render to avoid cascading effects)
+  const [prevPath, setPrevPath] = useState(location.pathname)
+  if (location.pathname !== prevPath) {
+    setPrevPath(location.pathname)
     setMenuOpen(false)
-  }, [location])
+  }
 
   // Hide/show navbar on scroll direction
   useEffect(() => {

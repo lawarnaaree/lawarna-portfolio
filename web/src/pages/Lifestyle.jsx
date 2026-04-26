@@ -55,15 +55,15 @@ export default function Lifestyle() {
         try {
           const res = await api.get(`/lifestyle/posts/${lightbox.id}/comments`);
           setComments(res.data.data);
-        } catch (err) {
-          console.error('Failed to fetch comments');
+        } catch (error) {
+          console.error('Failed to fetch comments', error);
         } finally {
           setCommentLoading(false);
         }
       };
       fetchComments();
     } else {
-      setComments([]);
+      setComments(prev => prev.length > 0 ? [] : prev);
     }
   }, [lightbox]);
 
@@ -126,7 +126,7 @@ export default function Lifestyle() {
       } else {
         await api.post(`/lifestyle/posts/${postId}/like`, { fingerprint });
       }
-    } catch (err) {
+    } catch (error) {
       // Revert on error
       setLikedPosts(prev => 
         isLiked ? [...prev, postId] : prev.filter(id => id !== postId)
@@ -150,8 +150,8 @@ export default function Lifestyle() {
       // Update comment count on post
       setPosts(prev => prev.map(p => p.id === lightbox.id ? { ...p, comments: p.comments + 1 } : p));
       setLightbox(prev => ({ ...prev, comments: prev.comments + 1 }));
-    } catch (err) {
-      console.error('Failed to post comment');
+    } catch (error) {
+      console.error('Failed to post comment', error);
     }
   };
 

@@ -20,6 +20,7 @@ export default function useGsap(animationFn, deps = []) {
     }, ref)
 
     return () => ctx.revert()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 
   return ref

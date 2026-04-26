@@ -38,7 +38,7 @@ export default function App() {
     }
     // Refresh ScrollTrigger on route change
     setTimeout(() => ScrollTrigger.refresh(), 100)
-  }, [location.pathname])
+  }, [location.pathname, lenisRef])
 
   const handlePreloaderComplete = () => {
     setLoading(false)

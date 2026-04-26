@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -6,7 +6,7 @@ function ParticleField() {
   const meshRef = useRef()
   const count = 1500
 
-  const [positions, colors] = useMemo(() => {
+  const [positions, colors] = useState(() => {
     const pos = new Float32Array(count * 3)
     const col = new Float32Array(count * 3)
     const accentColor = new THREE.Color('#e8572a')
@@ -30,7 +30,7 @@ function ParticleField() {
       col[i3 + 2] = color.b
     }
     return [pos, col]
-  }, [])
+  })
 
   useFrame((state) => {
     if (!meshRef.current) return

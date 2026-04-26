@@ -65,7 +65,7 @@ export default function Preloader({ onComplete }) {
     })
 
     return () => tl.kill()
-  }, [])
+  }, [onComplete])
 
   return (
     <div ref={preloaderRef} className="preloader" id="preloader">
