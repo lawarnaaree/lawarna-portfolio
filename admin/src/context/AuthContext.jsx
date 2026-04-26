@@ -13,10 +13,8 @@ export const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem('adminToken');
 
     if (storedUser && storedToken) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUser(JSON.parse(storedUser));
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(false);
   }, []);
 

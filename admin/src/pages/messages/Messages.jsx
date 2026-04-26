@@ -15,6 +15,7 @@ const Messages = () => {
       const response = await api.get('/general/messages');
       setMessages(response.data.data);
     } catch (error) {
+      console.error(error);
       toast.error('Failed to fetch messages');
     } finally {
       setLoading(false);
@@ -22,7 +23,6 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchMessages();
   }, []);
 
