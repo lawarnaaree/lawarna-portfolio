@@ -44,6 +44,7 @@ export default function Lifestyle() {
   }, [fingerprint]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
   }, [fetchData]);
 
@@ -63,6 +64,7 @@ export default function Lifestyle() {
       };
       fetchComments();
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setComments(prev => prev.length > 0 ? [] : prev);
     }
   }, [lightbox]);
@@ -127,6 +129,7 @@ export default function Lifestyle() {
         await api.post(`/lifestyle/posts/${postId}/like`, { fingerprint });
       }
     } catch (error) {
+      console.error('Failed to update like:', error);
       // Revert on error
       setLikedPosts(prev => 
         isLiked ? [...prev, postId] : prev.filter(id => id !== postId)
