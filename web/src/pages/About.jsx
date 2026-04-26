@@ -1,11 +1,10 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import useSettings from '../hooks/useSettings'
 import './About.css'
 import avatar from '../assets/avatar.jpg';
-import resume from '../assets/Lawarna_Aree_ATS_Resume.pdf';
-
-gsap.registerPlugin(ScrollTrigger)
+import resumeFile from '../assets/Lawarna_Aree_ATS_Resume.pdf';
 
 const SKILLS = [
   { category: 'Frontend', items: ['React', 'React Native', 'Flutter', 'Next.js', 'GSAP', 'Three.js'] },
@@ -14,10 +13,14 @@ const SKILLS = [
   { category: 'Tools', items: ['Git', 'Docker', 'Figma', 'VS Code', 'Linux'] },
 ]
 
+gsap.registerPlugin(ScrollTrigger)
+
 export default function About() {
+  const { settings, loading } = useSettings()
   const pageRef = useRef(null)
 
   useEffect(() => {
+    if (loading) return;
     const ctx = gsap.context(() => {
       // Heading reveal
       gsap.fromTo('.about__heading',
@@ -57,7 +60,7 @@ export default function About() {
     }, pageRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [loading])
 
   return (
     <main ref={pageRef} className="about-page">
@@ -75,24 +78,26 @@ export default function About() {
             <div className="about__portrait">
               <img
                 src={avatar}
-                alt="Lawarna Aree"
+                alt={settings.full_name || "Lawarna Aree"}
               />
             </div>
             <div className="about__bio-content">
-              <p className="about__bio-text">
-                I'm Lawarna Aree, a Cross-Platform Full-Stack Developer based in Nepal.
-                I specialize in building end-to-end digital solutions that merge thoughtful
-                design with robust engineering.
-              </p>
-              <p className="about__bio-text">
-                With expertise spanning React, React Native, Flutter, Node.js, and modern
-                databases, I create seamless experiences across web and mobile platforms.
-              </p>
-              <p className="about__bio-text">
-                My approach combines clean architecture with creative problem-solving —
-                I believe great software should be both beautiful and functional.
-              </p>
-              <a href={resume} className="about__resume-btn" data-cursor="Download" target="_blank" rel="noopener noreferrer">
+              {settings.bio ? (
+                settings.bio.split('\n').map((para, i) => (
+                  <p key={i} className="about__bio-text">{para}</p>
+                ))
+              ) : (
+                <>
+                  <p className="about__bio-text">
+                    I'm {settings.full_name || 'Lawarna Aree'}, a {settings.job_role || 'Cross-Platform Full-Stack Developer'} based in Nepal.
+                  </p>
+                  <p className="about__bio-text">
+                    I specialize in building end-to-end digital solutions that merge thoughtful
+                    design with robust engineering.
+                  </p>
+                </>
+              )}
+              <a href={settings.resume_url || resumeFile} className="about__resume-btn" data-cursor="Download" target="_blank" rel="noopener noreferrer">
                 Download Resume
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M8 3v8M5 8l3 3 3-3M3 13h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

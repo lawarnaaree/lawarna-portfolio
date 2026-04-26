@@ -1,0 +1,70 @@
+name: CPanel Production Deployment
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 1. Build Main Portfolio
+      - name: Build Web
+        env:
+          VITE_API_URL: https://api.lawarnaaree.com.np/api
+        run: |
+          cd web
+          npm install
+          npm run build
+
+      # 2. Build Admin Panel
+      - name: Build Admin
+        env:
+          VITE_API_URL: https://api.lawarnaaree.com.np/api
+        run: |
+          cd admin
+          npm install
+          npm run build
+
+      # 3. Deploy Web (Main Domain)
+      - name: Deploy Web to CPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./web/dist/
+          server-dir: /public_html/
+
+      # 4. Deploy Admin (Subdomain folder)
+      - name: Deploy Admin to CPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./admin/dist/
+          server-dir: /admin_html/
+
+      # 5. Deploy Server (API)
+      # We upload the server folder to the 'api' directory in CPanel
+      - name: Deploy Server to CPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./server/
+          server-dir: /api/
+          exclude: |
+            **/node_modules/**
+            **/.env
+            **/uploads/**

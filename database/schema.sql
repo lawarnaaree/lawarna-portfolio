@@ -1,6 +1,5 @@
-CREATE DATABASE IF NOT EXISTS lawarna_portfolio;
-
-USE lawarna_portfolio;
+-- CPanel Schema (Database creation handled via CPanel UI)
+-- ══════════════════════════════════════════════════════════════
 
 -- Drop tables in reverse order of dependencies to avoid foreign key constraints
 DROP TABLE IF EXISTS project_tag_map;

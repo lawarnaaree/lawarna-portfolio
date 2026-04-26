@@ -1,25 +1,31 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import useSettings from '../../hooks/useSettings'
 import './HeroSection.css'
 
 export default function HeroSection() {
+  const { settings, loading } = useSettings()
   const sectionRef = useRef(null)
   const headingRef = useRef(null)
   const subRef = useRef(null)
   const scrollRef = useRef(null)
 
   useEffect(() => {
+    if (loading) return;
+
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 3.5 }) // after preloader
+      const tl = gsap.timeline({ delay: 0.5 }) 
 
       // Split heading into characters for reveal
       const heading = headingRef.current
-      const text = heading.textContent
-      heading.innerHTML = text.split('').map(char =>
-        char === ' '
-          ? '<span class="hero__char">&nbsp;</span>'
-          : `<span class="hero__char">${char}</span>`
-      ).join('')
+      if (heading) {
+        const text = heading.textContent
+        heading.innerHTML = text.split('').map(char =>
+          char === ' '
+            ? '<span class="hero__char">&nbsp;</span>'
+            : `<span class="hero__char">${char}</span>`
+        ).join('')
+      }
 
       tl.fromTo('.hero__char',
         { y: '110%', rotateX: -80 },
@@ -51,13 +57,13 @@ export default function HeroSection() {
         yoyo: true,
         duration: 1.5,
         ease: 'power1.inOut',
-        delay: 4.5
+        delay: 1.5
       })
 
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [loading])
 
   return (
     <section ref={sectionRef} className="hero" id="hero-section">
@@ -69,11 +75,11 @@ export default function HeroSection() {
         </div>
 
         <h1 ref={headingRef} className="hero__heading">
-          Lawarna Aree
+          {settings.full_name || 'Lawarna Aree'}
         </h1>
 
         <div ref={subRef} className="hero__sub">
-          <p className="hero__role">Cross-Platform Full-Stack Developer</p>
+          <p className="hero__role">{settings.job_role || 'Cross-Platform Full-Stack Developer'}</p>
           <p className="hero__desc">
             Crafting digital experiences with precision, creativity, and modern technology.
           </p>
