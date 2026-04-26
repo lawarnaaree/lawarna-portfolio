@@ -2,7 +2,7 @@ import pool from '../config/db.js';
 
 export const journeyModel = {
   getAll: async () => {
-    const [rows] = await pool.query('SELECT * FROM journey_entries ORDER BY start_date DESC');
+    const [rows] = await pool.query('SELECT * FROM journey_entries ORDER BY is_current DESC, start_date DESC');
     return rows;
   },
 

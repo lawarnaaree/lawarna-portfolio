@@ -1,51 +1,38 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import api from '../../utils/api'
+import { getFileUrl } from '../../utils/helpers'
 import './FeaturedProjects.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Placeholder projects - will be replaced with API data
-const PROJECTS = [
-  {
-    id: 1,
-    slug: 'ecommerce-platform',
-    title: 'E-Commerce Platform',
-    tags: ['React', 'Node.js', 'MySQL'],
-    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
-    size: 'large',
-  },
-  {
-    id: 2,
-    slug: 'fitness-tracker',
-    title: 'Fitness Tracker App',
-    tags: ['React Native', 'Firebase'],
-    thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
-    size: 'small',
-  },
-  {
-    id: 3,
-    slug: 'portfolio-cms',
-    title: 'Portfolio CMS',
-    tags: ['Next.js', 'PostgreSQL'],
-    thumbnail: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
-    size: 'wide',
-  },
-  {
-    id: 4,
-    slug: 'chat-application',
-    title: 'Real-Time Chat',
-    tags: ['Socket.io', 'Express'],
-    thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80',
-    size: 'medium',
-  },
-]
-
 export default function FeaturedProjects() {
+  const [projects, setProjects] = useState([])
+  const [loading, setLoading] = useState(true)
   const sectionRef = useRef(null)
 
   useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const response = await api.get('/projects');
+        const featured = response.data.data
+          .filter(p => p.is_featured === 1)
+          .slice(0, 4); // Show top 4 featured
+        setProjects(featured);
+      } catch (error) {
+        console.error('Failed to fetch featured projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
+
+  useEffect(() => {
+    if (loading) return;
+
     const ctx = gsap.context(() => {
       // Section title reveal
       gsap.fromTo('.fp__title',
@@ -75,7 +62,9 @@ export default function FeaturedProjects() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [loading])
+
+  if (loading) return null;
 
   return (
     <section ref={sectionRef} className="fp section" id="featured-projects">
@@ -91,26 +80,32 @@ export default function FeaturedProjects() {
         </div>
 
         <div className="fp__grid">
-          {PROJECTS.map((project) => (
-            <Link
-              key={project.id}
-              to={`/projects/${project.slug}`}
-              className={`fp__card fp__card--${project.size}`}
-              data-cursor="View"
-            >
-              <div className="fp__card-image">
-                <img src={project.thumbnail} alt={project.title} loading="lazy" />
-              </div>
-              <div className="fp__card-info">
-                <h3 className="fp__card-title">{project.title}</h3>
-                <div className="fp__card-tags">
-                  {project.tags.map(tag => (
-                    <span key={tag} className="fp__tag">{tag}</span>
-                  ))}
+          {projects.map((project, i) => {
+            // Determine size based on index or property if available
+            const sizes = ['large', 'small', 'wide', 'medium'];
+            const size = sizes[i % sizes.length];
+            
+            return (
+              <Link
+                key={project.id}
+                to={`/projects/${project.slug}`}
+                className={`fp__card fp__card--${size}`}
+                data-cursor="View"
+              >
+                <div className="fp__card-image">
+                  <img src={getFileUrl(project.thumbnail)} alt={project.title} loading="lazy" />
                 </div>
-              </div>
-            </Link>
-          ))}
+                <div className="fp__card-info">
+                  <h3 className="fp__card-title">{project.title}</h3>
+                  <div className="fp__card-tags">
+                    {project.tags && project.tags.map(tag => (
+                      <span key={tag} className="fp__tag">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </section>

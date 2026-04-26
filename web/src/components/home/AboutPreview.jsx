@@ -1,20 +1,27 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import api from '../../utils/api'
 import './AboutPreview.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const STATS = [
-  { value: '3+', label: 'Years Experience' },
-  { value: '20+', label: 'Projects Completed' },
-  { value: '10+', label: 'Technologies' },
-  { value: '100%', label: 'Passion' },
-]
-
 export default function AboutPreview() {
+  const [about, setAbout] = useState(null)
   const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const fetchAbout = async () => {
+      try {
+        const response = await api.get('/general/about');
+        setAbout(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch about info:', error);
+      }
+    };
+    fetchAbout();
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -38,6 +45,13 @@ export default function AboutPreview() {
     return () => ctx.revert()
   }, [])
 
+  const STATS = [
+    { value: '3+', label: 'Years Experience' },
+    { value: '20+', label: 'Projects Completed' },
+    { value: '10+', label: 'Technologies' },
+    { value: '100%', label: 'Passion' },
+  ]
+
   return (
     <section ref={sectionRef} className="about-preview section" id="about-preview">
       <div className="container">
@@ -45,9 +59,7 @@ export default function AboutPreview() {
           <div className="about-preview__left">
             <p className="about-preview__label">About Me</p>
             <h2 className="about-preview__text">
-              I build <span className="text-accent">digital products</span> that live at the
-              intersection of design and technology — bringing ideas from concept to{' '}
-              <span className="text-accent">production</span>.
+              {about?.bio || "I build digital products that live at the intersection of design and technology — bringing ideas from concept to production."}
             </h2>
             <Link to="/about" className="about-preview__cta" data-cursor="Read More">
               More About Me

@@ -30,6 +30,10 @@ export default function MarqueeText() {
     'MySQL',
     'UI/UX',
     'Creative Thinker',
+    'C',
+    'C++',
+    'DevOPs',
+    'System Design'
   ]
 
   const renderItems = () => items.map((item, i) => (

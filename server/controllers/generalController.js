@@ -36,6 +36,27 @@ export const getMessages = async (req, res, next) => {
   }
 };
 
+export const updateMessage = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    await generalModel.updateContactStatus(id, status);
+    res.status(200).json({ success: true, message: 'Message status updated' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteMessage = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await generalModel.deleteContact(id);
+    res.status(200).json({ success: true, message: 'Message deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getSettings = async (req, res, next) => {
   try {
     const data = await generalModel.getSettings();

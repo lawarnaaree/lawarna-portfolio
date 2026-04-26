@@ -24,6 +24,13 @@ export const generalModel = {
     const [rows] = await pool.query('SELECT * FROM contacts ORDER BY created_at DESC');
     return rows;
   },
+  updateContactStatus: async (id, status) => {
+    // status is expected to be 'read' or 'unread'
+    await pool.query('UPDATE contacts SET status = ? WHERE id = ?', [status, id]);
+  },
+  deleteContact: async (id) => {
+    await pool.query('DELETE FROM contacts WHERE id = ?', [id]);
+  },
 
   // Settings
   getSettings: async () => {

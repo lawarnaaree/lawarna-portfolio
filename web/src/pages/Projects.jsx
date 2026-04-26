@@ -2,30 +2,46 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import api from '../utils/api'
+import { getFileUrl } from '../utils/helpers'
 import './Projects.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const ALL_PROJECTS = [
-  { id: 1, slug: 'ecommerce-platform', title: 'E-Commerce Platform', tags: ['React', 'Node.js', 'MySQL'], thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80' },
-  { id: 2, slug: 'fitness-tracker', title: 'Fitness Tracker App', tags: ['React Native', 'Firebase'], thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80' },
-  { id: 3, slug: 'portfolio-cms', title: 'Portfolio CMS', tags: ['Next.js', 'PostgreSQL'], thumbnail: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80' },
-  { id: 4, slug: 'chat-application', title: 'Real-Time Chat', tags: ['Socket.io', 'Express'], thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80' },
-  { id: 5, slug: 'task-manager', title: 'Task Manager Pro', tags: ['React', 'Node.js'], thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80' },
-  { id: 6, slug: 'weather-app', title: 'Weather Dashboard', tags: ['React', 'API'], thumbnail: 'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=600&q=80' },
-]
-
-const ALL_TAGS = ['All', ...new Set(ALL_PROJECTS.flatMap(p => p.tags))]
-
 export default function Projects() {
+  const [projects, setProjects] = useState([])
+  const [tags, setTags] = useState(['All'])
   const [activeTag, setActiveTag] = useState('All')
+  const [loading, setLoading] = useState(true)
   const pageRef = useRef(null)
 
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await api.get('/projects');
+        const data = response.data.data;
+        setProjects(data);
+        
+        // Extract unique tags
+        const allTags = ['All', ...new Set(data.flatMap(p => p.tags))];
+        setTags(allTags);
+      } catch (error) {
+        console.error('Failed to fetch projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
   const filtered = activeTag === 'All'
-    ? ALL_PROJECTS
-    : ALL_PROJECTS.filter(p => p.tags.includes(activeTag))
+    ? projects
+    : projects.filter(p => p.tags.includes(activeTag))
 
   useEffect(() => {
+    if (loading) return;
+
     const ctx = gsap.context(() => {
       gsap.fromTo('.projects__heading',
         { y: 80, opacity: 0 },
@@ -33,14 +49,24 @@ export default function Projects() {
       )
     }, pageRef)
     return () => ctx.revert()
-  }, [])
+  }, [loading])
 
   useEffect(() => {
+    if (loading) return;
+
     gsap.fromTo('.projects__card',
       { y: 40, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }
     )
-  }, [activeTag])
+  }, [activeTag, loading])
+
+  if (loading) {
+    return (
+      <div className="projects-loading">
+        <div className="loader"></div>
+      </div>
+    );
+  }
 
   return (
     <main ref={pageRef} className="projects-page">
@@ -54,7 +80,7 @@ export default function Projects() {
       <section className="projects__content section">
         <div className="container">
           <div className="projects__filters">
-            {ALL_TAGS.map(tag => (
+            {tags.map(tag => (
               <button
                 key={tag}
                 className={`projects__filter ${activeTag === tag ? 'active' : ''}`}
@@ -66,19 +92,25 @@ export default function Projects() {
           </div>
 
           <div className="projects__grid">
-            {filtered.map(project => (
-              <Link key={project.id} to={`/projects/${project.slug}`} className="projects__card" data-cursor="View">
-                <div className="projects__card-img">
-                  <img src={project.thumbnail} alt={project.title} loading="lazy" />
-                </div>
-                <div className="projects__card-body">
-                  <h3 className="projects__card-title">{project.title}</h3>
-                  <div className="projects__card-tags">
-                    {project.tags.map(t => <span key={t} className="projects__card-tag">{t}</span>)}
+            {filtered.length > 0 ? (
+              filtered.map(project => (
+                <Link key={project.id} to={`/projects/${project.slug}`} className="projects__card" data-cursor="View">
+                  <div className="projects__card-img">
+                    <img src={getFileUrl(project.thumbnail)} alt={project.title} loading="lazy" />
                   </div>
-                </div>
-              </Link>
-            ))}
+                  <div className="projects__card-body">
+                    <h3 className="projects__card-title">{project.title}</h3>
+                    <div className="projects__card-tags">
+                      {project.tags.map(t => <span key={t} className="projects__card-tag">{t}</span>)}
+                    </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="projects__empty">
+                <p>No projects found in this category.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>

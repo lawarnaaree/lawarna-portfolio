@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './About.css'
+import avatar from '../assets/avatar.jpg';
+import resume from '../assets/Lawarna_Aree_ATS_Resume.pdf';
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -72,7 +74,7 @@ export default function About() {
           <div className="about__bio-grid">
             <div className="about__portrait">
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80"
+                src={avatar}
                 alt="Lawarna Aree"
               />
             </div>
@@ -90,10 +92,10 @@ export default function About() {
                 My approach combines clean architecture with creative problem-solving —
                 I believe great software should be both beautiful and functional.
               </p>
-              <a href="/resume.pdf" className="about__resume-btn" data-cursor="Download" target="_blank" rel="noopener noreferrer">
+              <a href={resume} className="about__resume-btn" data-cursor="Download" target="_blank" rel="noopener noreferrer">
                 Download Resume
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M8 3v8M5 8l3 3 3-3M3 13h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8 3v8M5 8l3 3 3-3M3 13h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
             </div>

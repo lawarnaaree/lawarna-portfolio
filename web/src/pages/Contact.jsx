@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
+import api from '../utils/api'
 import './Contact.css'
 
 export default function Contact() {
@@ -34,12 +35,12 @@ export default function Contact() {
     setStatus('sending')
 
     try {
-      // Will connect to API later
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await api.post('/general/contact', form)
       setStatus('success')
       setForm({ name: '', email: '', phone: '', subject: '', message: '' })
       setTimeout(() => setStatus(null), 4000)
-    } catch {
+    } catch (error) {
+      console.error('Contact error:', error);
       setStatus('error')
       setTimeout(() => setStatus(null), 4000)
     }

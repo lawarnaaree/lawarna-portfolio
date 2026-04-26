@@ -27,6 +27,22 @@ export const getProject = async (req, res, next) => {
 export const addProject = async (req, res, next) => {
   try {
     const data = { ...req.body };
+    
+    // Handle Files
+    if (req.files) {
+      if (req.files.thumbnail) {
+        data.thumbnail = `/uploads/${req.files.thumbnail[0].filename}`;
+      }
+      if (req.files.media) {
+        data.media = req.files.media.map(file => `/uploads/${file.filename}`);
+      }
+    }
+
+    // Convert string booleans/numbers from FormData
+    if (data.is_featured === 'true' || data.is_featured === '1') data.is_featured = true;
+    if (data.is_featured === 'false' || data.is_featured === '0') data.is_featured = false;
+    if (data.display_order) data.display_order = parseInt(data.display_order, 10);
+
     if (!data.slug && data.title) {
       data.slug = slugify(data.title, { lower: true, strict: true });
     }
@@ -44,7 +60,34 @@ export const addProject = async (req, res, next) => {
 
 export const updateProject = async (req, res, next) => {
   try {
-    const success = await projectsModel.update(req.params.id, req.body);
+    const data = { ...req.body };
+
+    // Handle Files
+    if (req.files) {
+      if (req.files.thumbnail) {
+        data.thumbnail = `/uploads/${req.files.thumbnail[0].filename}`;
+      }
+      
+      const newMedia = req.files.media ? req.files.media.map(file => `/uploads/${file.filename}`) : [];
+      const existingMedia = req.body.existing_media || [];
+      
+      // If media files are uploaded OR existing_media is provided (even if empty)
+      // we want to sync the media gallery.
+      if (req.files.media || req.body.existing_media !== undefined) {
+        data.media = [...(Array.isArray(existingMedia) ? existingMedia : [existingMedia]), ...newMedia];
+      }
+    } else if (req.body.existing_media !== undefined) {
+      // No new files, but maybe some existing media were removed
+      const existingMedia = req.body.existing_media || [];
+      data.media = Array.isArray(existingMedia) ? existingMedia : [existingMedia];
+    }
+
+    // Convert string booleans/numbers from FormData
+    if (data.is_featured === 'true' || data.is_featured === '1') data.is_featured = true;
+    if (data.is_featured === 'false' || data.is_featured === '0') data.is_featured = false;
+    if (data.display_order) data.display_order = parseInt(data.display_order, 10);
+
+    const success = await projectsModel.update(req.params.id, data);
     if (!success) {
       res.status(404);
       throw new Error('Project not found or no changes made');

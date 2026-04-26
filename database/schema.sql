@@ -11,6 +11,8 @@ DROP TABLE IF EXISTS journey_entries;
 DROP TABLE IF EXISTS contacts;
 DROP TABLE IF EXISTS site_settings;
 DROP TABLE IF EXISTS about_info;
+DROP TABLE IF EXISTS post_likes;
+DROP TABLE IF EXISTS post_comments;
 DROP TABLE IF EXISTS lifestyle_posts;
 DROP TABLE IF EXISTS lifestyle_highlights;
 DROP TABLE IF EXISTS admins;
@@ -111,6 +113,7 @@ CREATE TABLE lifestyle_highlights(
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     cover_image VARCHAR(255) NOT NULL,
+    media_type ENUM('image', 'video') DEFAULT 'image',
     display_order INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -126,4 +129,21 @@ CREATE TABLE lifestyle_posts(
     is_reel BOOLEAN DEFAULT FALSE,
     posted_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE post_likes(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    post_id INT NOT NULL,
+    fingerprint VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES lifestyle_posts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE post_comments(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    post_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES lifestyle_posts(id) ON DELETE CASCADE
 );

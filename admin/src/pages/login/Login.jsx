@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiMail, FiLock, FiArrowRight } from 'react-icons/fi';
+import { useAuth } from '../../context/AuthContext';
+import toast from 'react-hot-toast';
 import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempt with:', { email, password });
-    // In real app, this would call API and redirect
-    window.location.href = '/dashboard';
+    setIsSubmitting(true);
+
+    try {
+      await login(email, password);
+      toast.success('Welcome back, Lawarna!');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+      const message = error.response?.data?.message || 'Invalid credentials. Please try again.';
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -20,7 +36,6 @@ const Login = () => {
           <div className="login-logo">
             <span className="logo-accent">L</span>awarna
           </div>
-          <h1>Admin Portal</h1>
           <p>Please enter your credentials to access the dashboard.</p>
         </div>
 
@@ -29,12 +44,13 @@ const Login = () => {
             <label>Email Address</label>
             <div className="input-wrapper">
               <FiMail className="input-icon" />
-              <input 
-                type="email" 
-                placeholder="admin@lawarna.com" 
+              <input
+                type="email"
+                placeholder="terobau@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={isSubmitting}
               />
             </div>
           </div>
@@ -43,23 +59,24 @@ const Login = () => {
             <label>Password</label>
             <div className="input-wrapper">
               <FiLock className="input-icon" />
-              <input 
-                type="password" 
-                placeholder="••••••••" 
+              <input
+                type="password"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                disabled={isSubmitting}
               />
             </div>
           </div>
 
-          <button type="submit" className="login-btn">
-            Sign In <FiArrowRight />
+          <button type="submit" className="login-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Signing In...' : 'Sign In'} <FiArrowRight />
           </button>
         </form>
 
         <div className="login-footer">
-          <p>© 2024 Lawarna Aree. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Lawarna Aree. All rights reserved.</p>
         </div>
       </div>
 

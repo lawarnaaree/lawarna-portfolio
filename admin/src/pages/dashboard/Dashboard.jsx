@@ -1,81 +1,220 @@
-import React from 'react';
-import { FiUsers, FiEye, FiMessageSquare, FiBriefcase } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { 
+  FiUsers, FiEye, FiMessageSquare, FiBriefcase, 
+  FiHeart, FiActivity, FiArrowRight, FiPlus, FiSettings 
+} from 'react-icons/fi';
+import { 
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, 
+  Tooltip, ResponsiveContainer 
+} from 'recharts';
+import api from '../../utils/api';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import './Dashboard.css';
 
-const StatCard = ({ icon, label, value, trend, trendValue }) => (
-  <div className="stat-card glass">
+dayjs.extend(relativeTime);
+
+const StatCard = ({ icon, label, value, subLabel, onClick }) => (
+  <div className="stat-card glass" onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
     <div className="stat-icon">{icon}</div>
     <div className="stat-info">
       <span className="stat-label">{label}</span>
       <h3 className="stat-value">{value}</h3>
-      <div className={`stat-trend ${trend}`}>
-        {trend === 'up' ? '↑' : '↓'} {trendValue}% 
-        <span className="trend-text">vs last month</span>
-      </div>
+      {subLabel && <div className="stat-sublabel">{subLabel}</div>}
     </div>
   </div>
 );
 
 const Dashboard = () => {
-  const stats = [
-    { icon: <FiEye />, label: 'Total Views', value: '12.4k', trend: 'up', trendValue: '12' },
-    { icon: <FiBriefcase />, label: 'Projects', value: '24', trend: 'up', trendValue: '2' },
-    { icon: <FiMessageSquare />, label: 'Inquiries', value: '48', trend: 'down', trendValue: '5' },
-    { icon: <FiUsers />, label: 'Visitors', value: '1.2k', trend: 'up', trendValue: '8' },
-  ];
+  const navigate = useNavigate();
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const response = await api.get('/dashboard');
+        setData(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDashboard();
+  }, []);
+
+  if (loading) return (
+    <div className="dashboard-page page-fade">
+      <div className="loading-state">Refurbishing your dashboard...</div>
+    </div>
+  );
+
+  const { stats, activity, engagement } = data;
+
+  const chartData = engagement.map(item => ({
+    name: dayjs(item.date).format('MMM D'),
+    likes: item.count
+  }));
+
+  const getActivityIcon = (type) => {
+    switch(type) {
+      case 'project': return <FiBriefcase />;
+      case 'message': return <FiMessageSquare />;
+      case 'post': return <FiHeart />;
+      default: return <FiActivity />;
+    }
+  };
+
+  const getActivityText = (item) => {
+    switch(item.type) {
+      case 'project': return <>New project <strong>"{item.label}"</strong> added.</>;
+      case 'message': return <>Received message from <strong>{item.label}</strong>.</>;
+      case 'post': return <>Shared a new lifestyle post: <strong>"{item.label?.substring(0, 30)}..."</strong></>;
+      default: return item.label;
+    }
+  };
 
   return (
     <div className="dashboard-page page-fade">
       <div className="dashboard-header">
-        <h1 className="gradient-text">Dashboard</h1>
-        <p className="subtitle">Overview of your portfolio's performance and activity.</p>
+        <h1 className="gradient-text">Welcome Back, Lawarna</h1>
+        <p className="subtitle">Here's what's happening with your portfolio today.</p>
       </div>
 
       <div className="stats-grid">
-        {stats.map((stat, index) => (
-          <StatCard key={index} {...stat} />
-        ))}
+        <StatCard 
+          icon={<FiBriefcase />} 
+          label="Total Projects" 
+          value={stats.projects} 
+          subLabel="Portfolio growth"
+          onClick={() => navigate('/projects')}
+        />
+        <StatCard 
+          icon={<FiMessageSquare />} 
+          label="Inquiries" 
+          value={stats.messages.total} 
+          subLabel={`${stats.messages.unread} unread messages`}
+          onClick={() => navigate('/messages')}
+        />
+        <StatCard 
+          icon={<FiHeart />} 
+          label="Lifestyle Likes" 
+          value={stats.lifestyle.likes} 
+          subLabel={`Across ${stats.lifestyle.posts} posts`}
+          onClick={() => navigate('/lifestyle')}
+        />
+        <StatCard 
+          icon={<FiActivity />} 
+          label="Career Steps" 
+          value={stats.journey} 
+          subLabel="Journey timeline items"
+          onClick={() => navigate('/journey')}
+        />
+      </div>
+
+      <div className="dashboard-charts">
+        <div className="chart-container glass">
+          <div className="section-header">
+            <h3>Recent Engagement</h3>
+            <span className="subtitle">Likes over the last 7 days</span>
+          </div>
+          <div className="chart-wrapper">
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={chartData}>
+                <defs>
+                  <linearGradient id="colorLikes" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <XAxis 
+                  dataKey="name" 
+                  stroke="var(--text-dim)" 
+                  fontSize={12} 
+                  tickLine={false} 
+                  axisLine={false}
+                />
+                <YAxis 
+                  stroke="var(--text-dim)" 
+                  fontSize={12} 
+                  tickLine={false} 
+                  axisLine={false}
+                />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid var(--border)', borderRadius: '8px' }}
+                  itemStyle={{ color: 'var(--primary)' }}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="likes" 
+                  stroke="var(--primary)" 
+                  strokeWidth={3}
+                  fillOpacity={1} 
+                  fill="url(#colorLikes)" 
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
 
       <div className="dashboard-sections">
         <div className="section-main glass">
           <div className="section-header">
             <h3>Recent Activity</h3>
-            <button className="view-all">View All</button>
+            <button className="view-all" onClick={() => navigate('/messages')}>View Inquiries <FiArrowRight /></button>
           </div>
           <div className="activity-list">
-            <div className="activity-item">
-              <div className="activity-dot"></div>
-              <div className="activity-content">
-                <p className="activity-text">New project <strong>"Modern E-commerce"</strong> added to portfolio.</p>
-                <span className="activity-time">2 hours ago</span>
+            {activity.length > 0 ? activity.map((item, index) => (
+              <div key={`${item.type}-${item.id}-${index}`} className="activity-item">
+                <div className={`activity-icon-small ${item.type}`}>
+                  {getActivityIcon(item.type)}
+                </div>
+                <div className="activity-content">
+                  <p className="activity-text">{getActivityText(item)}</p>
+                  <span className="activity-time">{dayjs(item.created_at).fromNow()}</span>
+                </div>
               </div>
-            </div>
-            <div className="activity-item">
-              <div className="activity-dot"></div>
-              <div className="activity-content">
-                <p className="activity-text">Received a new inquiry from <strong>John Doe</strong> via contact form.</p>
-                <span className="activity-time">5 hours ago</span>
-              </div>
-            </div>
-            <div className="activity-item">
-              <div className="activity-dot"></div>
-              <div className="activity-content">
-                <p className="activity-text">Lifestyle post updated with a new reel.</p>
-                <span className="activity-time">Yesterday</span>
-              </div>
-            </div>
+            )) : (
+              <p className="empty-text">No recent activity to show.</p>
+            )}
           </div>
         </div>
 
-        <div className="section-side glass">
-          <div className="section-header">
-            <h3>Quick Actions</h3>
+        <div className="section-side">
+          <div className="side-card glass">
+            <div className="section-header">
+              <h3>Quick Actions</h3>
+            </div>
+            <div className="quick-actions">
+              <button className="action-btn primary" onClick={() => navigate('/projects/add')}>
+                <FiPlus /> New Project
+              </button>
+              <button className="action-btn" onClick={() => navigate('/lifestyle/add')}>
+                <FiPlus /> New Lifestyle Post
+              </button>
+              <button className="action-btn" onClick={() => navigate('/messages')}>
+                <FiMessageSquare /> Check Inbox
+              </button>
+              <button className="action-btn" onClick={() => navigate('/settings')}>
+                <FiSettings /> Site Settings
+              </button>
+            </div>
           </div>
-          <div className="quick-actions">
-            <button className="action-btn primary">Add New Project</button>
-            <button className="action-btn">Update Biography</button>
-            <button className="action-btn">Manage Highlights</button>
+
+          <div className="side-card glass status-summary">
+            <h3>System Status</h3>
+            <div className="status-item">
+              <span>Database</span>
+              <span className="status-tag online">Online</span>
+            </div>
+            <div className="status-item">
+              <span>Media Server</span>
+              <span className="status-tag online">Active</span>
+            </div>
           </div>
         </div>
       </div>

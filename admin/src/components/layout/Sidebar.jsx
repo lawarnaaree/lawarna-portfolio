@@ -9,9 +9,11 @@ import {
   FiSettings, 
   FiLogOut 
 } from 'react-icons/fi';
+import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
 
 const Sidebar = () => {
+  const { logout } = useAuth();
   const menuItems = [
     { path: '/dashboard', icon: <FiGrid />, label: 'Dashboard' },
     { path: '/projects', icon: <FiBriefcase />, label: 'Projects' },
@@ -46,7 +48,7 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
-        <button className="logout-btn">
+        <button className="logout-btn" onClick={logout}>
           <FiLogOut />
           <span>Logout</span>
         </button>

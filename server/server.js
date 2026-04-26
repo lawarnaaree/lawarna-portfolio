@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { globalLimiter } from './middlewares/rateLimiter.js';
 
 // Route Imports
 import authRoutes from './routes/authRoutes.js';
@@ -11,17 +12,31 @@ import projectsRoutes from './routes/projectsRoutes.js';
 import journeyRoutes from './routes/journeyRoutes.js';
 import lifestyleRoutes from './routes/lifestyleRoutes.js';
 import generalRoutes from './routes/generalRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
 const app = express();
 
 // Middlewares
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(globalLimiter);
+
+// Serve Static Files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -29,6 +44,8 @@ app.use('/api/projects', projectsRoutes);
 app.use('/api/journey', journeyRoutes);
 app.use('/api/lifestyle', lifestyleRoutes);
 app.use('/api/general', generalRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Health Check
 app.get('/', (req, res) => {

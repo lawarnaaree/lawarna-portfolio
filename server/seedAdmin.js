@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import pool from './config/db.js';
 import dotenv from 'dotenv';
 
@@ -14,7 +14,7 @@ const seedAdmin = async () => {
         const hashedPassword = await bcrypt.hash(plainPassword, salt);
 
         const [existing] = await pool.query(
-            'SELECT id FROM admin WHERE email = ?',
+            'SELECT id FROM admins WHERE email = ?',
             [email]
         )
 
@@ -30,8 +30,6 @@ const seedAdmin = async () => {
         );
 
         console.log(`Admin seeded successfully!`);
-        console.log(` Email: ${email}`);
-        console.log(` Password: ${plainPassword}`);
         process.exit(0);
     }
 

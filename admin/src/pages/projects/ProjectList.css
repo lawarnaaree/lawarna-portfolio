@@ -124,8 +124,39 @@
   border-color: var(--primary);
 }
 
-.icon-btn.delete:hover {
-  color: #f87171;
-  border-color: #f87171;
-  background-color: rgba(248, 113, 113, 0.05);
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  border-radius: var(--radius);
+  height: 45px;
+}
+
+.search-icon {
+  color: var(--text-dim);
+  margin-right: 10px;
+}
+
+.search-wrapper input {
+  background: none;
+  border: none;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  width: 200px;
+}
+
+.loading-state, .empty-state {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
