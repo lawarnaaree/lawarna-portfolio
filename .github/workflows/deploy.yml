@@ -48,7 +48,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./web/dist/
-          server-dir: /public_html/
+          server-dir: public_html/
 
       # 4. Deploy Admin (Subdomain folder)
       - name: Deploy Admin to CPanel
@@ -58,7 +58,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./admin/dist/
-          server-dir: /admin_html/
+          server-dir: admin.lawarnaaree.com.np/
 
       # 5. Deploy Server (API)
       # We upload the server folder to the 'api' directory in CPanel
@@ -69,7 +69,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./server/
-          server-dir: /api/
+          server-dir: api.lawarnaaree.com.np/
           exclude: |
             **/node_modules/**
             **/.env
