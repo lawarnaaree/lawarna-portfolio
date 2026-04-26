@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FiArrowLeft, FiSave, FiUpload, FiImage, FiX } from 'react-icons/fi';
+import { FiArrowLeft, FiSave, FiUpload, FiX } from 'react-icons/fi';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import './AddProject.css';
@@ -63,6 +63,7 @@ const EditProject = () => {
           })));
         }
       } catch (error) {
+        console.error(error);
         toast.error('Failed to fetch project details');
         navigate('/projects');
       } finally {

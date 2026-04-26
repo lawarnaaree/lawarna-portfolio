@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FiSave, FiGlobe, FiUser, FiShare2, FiMail, FiLoader } from 'react-icons/fi';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
@@ -33,11 +33,13 @@ const Settings = () => {
         // Merge with defaults to ensure all fields exist
         setSettings(prev => ({ ...prev, ...response.data.data }));
       } catch (error) {
+        console.error(error);
         toast.error('Failed to load settings');
       } finally {
         setLoading(false);
       }
     };
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSettings();
   }, []);
 
@@ -53,6 +55,7 @@ const Settings = () => {
       await api.put('/settings', settings);
       toast.success('Settings updated successfully!');
     } catch (error) {
+      console.error(error);
       toast.error('Failed to update settings');
     } finally {
       setSaving(false);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiSave } from 'react-icons/fi';
 import api from '../../utils/api';
@@ -46,6 +46,7 @@ const EditJourney = () => {
           type: entry.type || 'work'
         });
       } catch (error) {
+        console.error(error);
         toast.error('Failed to fetch journey details');
         navigate('/journey');
       } finally {
@@ -78,6 +79,7 @@ const EditJourney = () => {
       toast.success('Journey entry updated successfully!');
       navigate('/journey');
     } catch (error) {
+      console.error(error);
       toast.error(error.response?.data?.message || 'Failed to update journey entry');
     } finally {
       setIsSubmitting(false);

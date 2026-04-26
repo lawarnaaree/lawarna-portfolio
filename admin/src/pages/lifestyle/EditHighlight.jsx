@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiSave, FiUpload } from 'react-icons/fi';
 import api from '../../utils/api';
@@ -36,6 +36,7 @@ const EditHighlight = () => {
         });
         setExistingMedia(hl.cover_image);
       } catch (error) {
+        console.error(error);
         toast.error('Failed to load highlight');
         navigate('/lifestyle');
       } finally {
@@ -91,6 +92,7 @@ const EditHighlight = () => {
       toast.success('Highlight updated successfully!');
       navigate('/lifestyle');
     } catch (error) {
+      console.error(error);
       toast.error(error.response?.data?.message || 'Failed to update highlight');
     } finally {
       setIsSubmitting(false);

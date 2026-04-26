@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiSave, FiUpload, FiImage, FiX } from 'react-icons/fi';
+import { FiArrowLeft, FiSave, FiUpload, FiX } from 'react-icons/fi';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import './AddProject.css';

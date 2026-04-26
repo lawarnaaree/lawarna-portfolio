@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiMail, FiTrash2, FiEye, FiCheckCircle, FiX, FiPhone, FiCalendar, FiUser, FiTag } from 'react-icons/fi';
+import { FiTrash2, FiEye, FiCheckCircle } from 'react-icons/fi';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import './Messages.css';
@@ -22,6 +22,7 @@ const Messages = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchMessages();
   }, []);
 
@@ -33,6 +34,7 @@ const Messages = () => {
         setMessages(messages.filter(m => m.id !== id));
       } catch (error) {
         toast.error('Failed to delete message');
+        console.error(error);
       }
     }
   };
@@ -44,6 +46,7 @@ const Messages = () => {
       setMessages(messages.map(m => m.id === id ? { ...m, status: newStatus } : m));
     } catch (error) {
       toast.error('Failed to update message status');
+      console.error(error);
     }
   };
 

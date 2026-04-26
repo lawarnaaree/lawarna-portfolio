@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  FiUsers, FiEye, FiMessageSquare, FiBriefcase, 
+  FiMessageSquare, FiBriefcase, 
   FiHeart, FiActivity, FiArrowRight, FiPlus, FiSettings 
 } from 'react-icons/fi';
 import { 
@@ -42,6 +42,7 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchDashboard();
   }, []);
 

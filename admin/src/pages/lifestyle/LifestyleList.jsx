@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiTrash2, FiEdit2, FiHeart, FiMessageCircle } from 'react-icons/fi';
 import api from '../../utils/api';
@@ -29,13 +29,17 @@ const LifestyleList = () => {
       setPosts(postsRes.data.data);
       setHighlights(highlightsRes.data.data);
     } catch (error) {
+      console.error(error);
       toast.error('Failed to fetch lifestyle data');
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchData(); 
+  }, []);
 
   const handleDeletePost = async (id) => {
     if (window.confirm('Remove this post?')) {
@@ -44,6 +48,7 @@ const LifestyleList = () => {
         toast.success('Post removed');
         setPosts(posts.filter(p => p.id !== id));
       } catch (error) {
+        console.error(error);
         toast.error('Failed to remove post');
       }
     }
@@ -56,6 +61,7 @@ const LifestyleList = () => {
         toast.success('Highlight removed');
         setHighlights(highlights.filter(h => h.id !== id));
       } catch (error) {
+        console.error(error);
         toast.error('Failed to remove highlight');
       }
     }

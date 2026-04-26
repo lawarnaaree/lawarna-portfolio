@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiTrash2, FiUser, FiMail, FiPhone, FiCalendar, FiTag } from 'react-icons/fi';
 import api from '../../utils/api';
@@ -30,6 +30,7 @@ const MessageDetail = () => {
           await api.put(`/general/messages/${id}`, { status: 'read' });
         }
       } catch (error) {
+        console.error(error);
         toast.error('Failed to fetch message details');
         navigate('/messages');
       } finally {
@@ -46,6 +47,7 @@ const MessageDetail = () => {
         toast.success('Message deleted successfully');
         navigate('/messages');
       } catch (error) {
+        console.error(error);
         toast.error('Failed to delete message');
       }
     }

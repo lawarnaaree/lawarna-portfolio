@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiEdit2, FiTrash2, FiExternalLink, FiSearch } from 'react-icons/fi';
 import api from '../../utils/api';
@@ -16,6 +16,7 @@ const ProjectList = () => {
       const response = await api.get('/projects?status=all');
       setProjects(response.data.data);
     } catch (error) {
+      console.error(error);
       toast.error('Failed to fetch projects');
     } finally {
       setLoading(false);
@@ -23,6 +24,7 @@ const ProjectList = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchProjects();
   }, []);
 
@@ -33,6 +35,7 @@ const ProjectList = () => {
         toast.success('Project deleted successfully');
         setProjects(projects.filter(p => p.id !== id));
       } catch (error) {
+        console.error(error);
         toast.error('Failed to delete project');
       }
     }

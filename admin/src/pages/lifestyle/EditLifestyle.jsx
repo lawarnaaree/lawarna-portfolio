@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiSave, FiUpload } from 'react-icons/fi';
 import api from '../../utils/api';
@@ -35,6 +35,7 @@ const EditLifestyle = () => {
         });
         setExistingMedia(post.media_url);
       } catch (error) {
+        console.error(error);
         toast.error('Failed to load post');
         navigate('/lifestyle');
       } finally {
@@ -89,6 +90,7 @@ const EditLifestyle = () => {
       toast.success('Post updated successfully!');
       navigate('/lifestyle');
     } catch (error) {
+      console.error(error);
       toast.error(error.response?.data?.message || 'Failed to update post');
     } finally {
       setIsSubmitting(false);

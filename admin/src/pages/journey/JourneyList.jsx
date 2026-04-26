@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiEdit2, FiTrash2, FiCalendar, FiBriefcase, FiBookOpen, FiAward } from 'react-icons/fi';
 import api from '../../utils/api';
@@ -15,6 +15,7 @@ const JourneyList = () => {
       const response = await api.get('/journey');
       setEntries(response.data.data);
     } catch (error) {
+      console.error(error);
       toast.error('Failed to fetch journey entries');
     } finally {
       setLoading(false);
@@ -22,6 +23,7 @@ const JourneyList = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchJourney();
   }, []);
 
@@ -32,6 +34,7 @@ const JourneyList = () => {
         toast.success('Entry deleted');
         setEntries(entries.filter(e => e.id !== id));
       } catch (error) {
+        console.error(error);
         toast.error('Failed to delete entry');
       }
     }
