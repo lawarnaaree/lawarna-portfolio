@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiSave, FiUpload, FiX } from 'react-icons/fi';
 import api from '../../utils/api';
+import { getFileUrl } from '../../utils/helpers';
 import toast from 'react-hot-toast';
 import './AddProject.css';
 
@@ -50,15 +51,13 @@ const EditProject = () => {
           tags: Array.isArray(data.tags) ? data.tags.join(', ') : (data.tags || '')
         });
         
-        const baseUrl = import.meta.env.VITE_API_URL.replace('/api', '');
-
         if (data.thumbnail) {
-          setExistingThumbnail(data.thumbnail.startsWith('http') ? data.thumbnail : `${baseUrl}${data.thumbnail}`);
+          setExistingThumbnail(getFileUrl(data.thumbnail));
         }
 
         if (data.media) {
           setExistingMedia(data.media.map(m => ({
-            url: m.media_url.startsWith('http') ? m.media_url : `${baseUrl}${m.media_url}`,
+            url: getFileUrl(m.media_url),
             path: m.media_url
           })));
         }

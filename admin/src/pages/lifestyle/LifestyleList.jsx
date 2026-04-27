@@ -5,13 +5,7 @@ import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import './LifestyleList.css';
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
-
-const getMediaUrl = (path) => {
-  if (!path) return '';
-  if (path.startsWith('http')) return path;
-  return `${API_BASE}${path}`;
-};
+import { getFileUrl } from '../../utils/helpers';
 
 const LifestyleList = () => {
   const navigate = useNavigate();
@@ -108,9 +102,9 @@ const LifestyleList = () => {
                 <div key={post.id} className="post-card glass">
                   <div className="post-media">
                     {post.media_type === 'video' ? (
-                      <video src={getMediaUrl(post.media_url)} />
+                      <video src={getFileUrl(post.media_url)} />
                     ) : (
-                      <img src={getMediaUrl(post.media_url)} alt={post.caption} />
+                      <img src={getFileUrl(post.media_url)} alt={post.caption} />
                     )}
                     <div className="post-overlay">
                       <button className="post-action" onClick={() => navigate(`/lifestyle/edit/${post.id}`)}>
@@ -148,9 +142,9 @@ const LifestyleList = () => {
                 <div key={hl.id} className="highlight-card glass">
                   <div className="highlight-media">
                     {hl.media_type === 'video' ? (
-                      <video src={getMediaUrl(hl.cover_image)} />
+                      <video src={getFileUrl(hl.cover_image)} />
                     ) : (
-                      <img src={getMediaUrl(hl.cover_image)} alt={hl.title} />
+                      <img src={getFileUrl(hl.cover_image)} alt={hl.title} />
                     )}
                     <div className="post-overlay">
                       <button className="post-action" onClick={() => navigate(`/lifestyle/edit-highlight/${hl.id}`)}>

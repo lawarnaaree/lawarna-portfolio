@@ -5,7 +5,7 @@ import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import '../projects/AddProject.css';
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+import { getFileUrl } from '../../utils/helpers';
 
 const EditHighlight = () => {
   const { id } = useParams();
@@ -69,11 +69,6 @@ const EditHighlight = () => {
     }
   };
 
-  const getMediaUrl = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http')) return path;
-    return `${API_BASE}${path}`;
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,7 +96,7 @@ const EditHighlight = () => {
 
   if (loading) return <div className="add-project-page page-fade"><div className="loading-state">Loading...</div></div>;
 
-  const displayMedia = mediaPreview || getMediaUrl(existingMedia);
+  const displayMedia = mediaPreview || getFileUrl(existingMedia);
 
   return (
     <div className="add-project-page page-fade">

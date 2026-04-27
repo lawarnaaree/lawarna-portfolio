@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const defaultApiUrl = window.location.hostname.includes('lawarnaaree.com.np')
+  ? 'https://api.lawarnaaree.com.np/api'
+  : 'http://localhost:5000/api';
+
+const API_URL = import.meta.env.VITE_API_URL || defaultApiUrl;
 
 export default function useSettings() {
   const [settings, setSettings] = useState({
