@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import useSettings from '../hooks/useSettings'
 import './About.css'
 import me from '../assets/phoksundo1.jpg'
-import resumeFile from '../assets/Lawarna_Aree_ATS_Resume.pdf';
 
 const SKILLS = [
   { category: 'Frontend', items: ['React', 'React Native', 'Flutter', 'Next.js', 'GSAP', 'Three.js'] },
@@ -97,7 +96,7 @@ export default function About() {
                   </p>
                 </>
               )}
-              <a href={settings.resume_url || resumeFile} className="about__resume-btn" data-cursor="Download" target="_blank" rel="noopener noreferrer">
+              <a href={settings.resume_url || "/resume.pdf"} className="about__resume-btn" data-cursor="Download" target="_blank" rel="noopener noreferrer">
                 Download Resume
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M8 3v8M5 8l3 3 3-3M3 13h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
