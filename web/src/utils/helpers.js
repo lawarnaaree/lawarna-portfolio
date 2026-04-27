@@ -1,11 +1,11 @@
 export const getFileUrl = (path) => {
   if (!path) return '';
   if (path.startsWith('http')) return path;
-  
+
   // Fallback for production if env var is missing
   const defaultApiUrl = window.location.hostname.includes('lawarnaaree.com.np')
     ? 'https://api.lawarnaaree.com.np/api'
-    : 'http://localhost:5000/api';
+    : 'http://localhost:5174/api';
 
   let apiUrl = import.meta.env.VITE_API_URL || defaultApiUrl;
   
