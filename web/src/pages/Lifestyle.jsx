@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import api from '../utils/api'
 import { getFileUrl } from '../utils/helpers'
 import { useFingerprint } from '../hooks/useFingerprint'
+import me from '../assets/phoksundo1.jpg'
 import './Lifestyle.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -259,7 +260,7 @@ export default function Lifestyle() {
               <div className="lightbox-details">
                 <div className="lightbox-header">
                   <div className="user-avatar">
-                    <img src={avatar} alt="Lawarna" />
+                    <img src={me} alt="Lawarna" />
                   </div>
                   <div className="user-info">
                     <span className="username">lawarna_aree</span>
