@@ -36,7 +36,7 @@ app.use(cookieParser());
 app.use(globalLimiter);
 
 // Serve Static Files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // API Routes
 app.use('/api/auth', authRoutes);
