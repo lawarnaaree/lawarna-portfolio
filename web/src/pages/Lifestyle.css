@@ -418,37 +418,24 @@
   border: none;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-  .lightbox-content-grid {
-    grid-template-columns: 1fr;
-    height: auto;
-    max-height: 90vh;
-    overflow-y: auto;
+@media (max-width: 1024px) {
+  .ig-container {
+    max-width: 100%;
   }
-  
-  .lightbox-media {
-    aspect-ratio: 1;
-  }
-  
-  .lightbox-details {
-    border-left: none;
-    border-top: 1px solid var(--c-border);
+  .ig-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
   .ig-highlights {
-    gap: 15px;
-    justify-content: flex-start;
+    gap: 20px;
+    padding: 0;
+    margin-bottom: 30px;
   }
   .ig-highlight-ring {
-    width: 60px;
-    height: 60px;
-  }
-  .ig-tabs {
-    gap: 0;
-    justify-content: space-around;
+    width: 66px;
+    height: 66px;
   }
   .ig-tab span {
     display: none;
@@ -458,7 +445,12 @@
     height: 24px;
   }
   .ig-grid {
-    gap: var(--s-sm);
+    gap: 4px; /* Tight grid like Instagram */
+    margin-top: 0;
+  }
+  .ig-post {
+    border-radius: 0;
+    border: none;
   }
   .lifestyle__lightbox {
     padding: 0;
@@ -469,13 +461,22 @@
     border-radius: 0;
   }
   .lightbox-content-grid {
+    grid-template-columns: 1fr;
     height: 100vh;
-    max-height: 100vh;
+    overflow-y: auto;
+  }
+  .lightbox-media {
+    aspect-ratio: 1 / 1;
+    height: auto;
+  }
+  .lightbox-details {
+    border-left: none;
+    border-top: 1px solid var(--c-border);
   }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 480px) {
   .ig-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* Keep 3 columns on mobile for grid feel */
   }
 }

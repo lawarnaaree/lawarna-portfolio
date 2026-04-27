@@ -120,16 +120,29 @@
 }
 
 @media (max-width: 768px) {
-  .journey__line { left: 24px; }
+  .journey__line {
+    left: 24px;
+    transform: none;
+  }
   .journey__card {
     width: 100%;
-    padding-left: 60px;
+    padding-left: 56px;
     flex-direction: row !important;
     text-align: left !important;
-    align-self: stretch !important;
+    align-self: flex-start !important;
+    gap: 0;
   }
   .journey__card-dot {
     position: absolute;
     left: 0;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+  }
+  .journey__card-content {
+    padding: var(--s-lg);
+  }
+  .journey__card-title {
+    font-size: var(--fs-md);
   }
 }

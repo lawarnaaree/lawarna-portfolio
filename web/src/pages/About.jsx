@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import useSettings from '../hooks/useSettings'
 import './About.css'
-import avatar from '../assets/avatar.jpg';
+import me from '../assets/phoksundo1.jpg'
 import resumeFile from '../assets/Lawarna_Aree_ATS_Resume.pdf';
 
 const SKILLS = [
@@ -77,7 +77,7 @@ export default function About() {
           <div className="about__bio-grid">
             <div className="about__portrait">
               <img
-                src={avatar}
+                src={me}
                 alt={settings.full_name || "Lawarna Aree"}
               />
             </div>

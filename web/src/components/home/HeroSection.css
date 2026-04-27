@@ -118,11 +118,30 @@
   color: var(--c-text-muted);
 }
 
+@media (max-width: 1024px) {
+  .hero__heading {
+    font-size: var(--fs-4xl);
+  }
+}
+
 @media (max-width: 768px) {
+  .hero__content {
+    gap: var(--s-lg);
+  }
   .hero__heading {
     font-size: var(--fs-3xl);
   }
   .hero__role {
     font-size: var(--fs-sm);
+  }
+  .hero__desc {
+    font-size: var(--fs-sm);
+    max-width: 100%;
+  }
+  .hero__scroll {
+    bottom: 1.5rem;
+  }
+  .hero__scroll-line {
+    height: 25px;
   }
 }

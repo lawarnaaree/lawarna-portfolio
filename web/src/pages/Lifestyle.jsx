@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import api from '../utils/api'
 import { getFileUrl } from '../utils/helpers'
 import { useFingerprint } from '../hooks/useFingerprint'
-import avatar from '../assets/avatar.jpg'
 import './Lifestyle.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -19,7 +18,7 @@ export default function Lifestyle() {
   const [comments, setComments] = useState([])
   const [commentLoading, setCommentLoading] = useState(false)
   const [commentForm, setCommentForm] = useState({ name: '', text: '' })
-  
+
   const fingerprint = useFingerprint();
 
   const fetchData = useCallback(async () => {
@@ -90,7 +89,7 @@ export default function Lifestyle() {
       // Grid animation
       gsap.fromTo('.ig-post',
         { y: 40, opacity: 0 },
-        { 
+        {
           y: 0, opacity: 1, duration: 0.8, stagger: 0.05, ease: 'power3.out', delay: 0.4,
           scrollTrigger: { trigger: '.ig-grid', start: 'top 85%' }
         }
@@ -104,9 +103,9 @@ export default function Lifestyle() {
     if (!fingerprint) return;
 
     const isLiked = likedPosts.includes(postId);
-    
+
     // Optimistic UI
-    setLikedPosts(prev => 
+    setLikedPosts(prev =>
       isLiked ? prev.filter(id => id !== postId) : [...prev, postId]
     );
     setPosts(prev => prev.map(p => {
@@ -131,7 +130,7 @@ export default function Lifestyle() {
     } catch (error) {
       console.error('Failed to update like:', error);
       // Revert on error
-      setLikedPosts(prev => 
+      setLikedPosts(prev =>
         isLiked ? [...prev, postId] : prev.filter(id => id !== postId)
       );
       // Ideally re-fetch or revert counts here too
@@ -205,8 +204,8 @@ export default function Lifestyle() {
         {/* Grid */}
         <div className="ig-grid">
           {posts.length > 0 ? posts.map(post => (
-            <div 
-              key={post.id} 
+            <div
+              key={post.id}
               className="ig-post"
               onClick={() => setLightbox(post)}
               data-cursor="Expand"
@@ -218,17 +217,17 @@ export default function Lifestyle() {
               )}
               {post.is_reel && (
                 <div className="reel-icon">
-                  <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" /></svg>
                 </div>
               )}
               <div className="ig-post-overlay">
                 <div className="ig-post-stats">
                   <span>
-                    <svg viewBox="0 0 24 24" fill={likedPosts.includes(post.id) ? "var(--c-accent)" : "currentColor"} width="20" height="20"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    <svg viewBox="0 0 24 24" fill={likedPosts.includes(post.id) ? "var(--c-accent)" : "currentColor"} width="20" height="20"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
                     {post.likes || 0}
                   </span>
                   <span>
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
                     {post.comments || 0}
                   </span>
                 </div>
@@ -247,7 +246,7 @@ export default function Lifestyle() {
         <div className="lifestyle__lightbox" onClick={() => setLightbox(null)}>
           <div className="lifestyle__lightbox-inner" onClick={e => e.stopPropagation()}>
             <button className="lifestyle__lightbox-close" onClick={() => setLightbox(null)}>✕</button>
-            
+
             <div className="lightbox-content-grid">
               <div className="lightbox-media">
                 {lightbox.media_type === 'video' ? (
@@ -256,7 +255,7 @@ export default function Lifestyle() {
                   <img src={getFileUrl(lightbox.media_url)} alt={lightbox.caption} />
                 )}
               </div>
-              
+
               <div className="lightbox-details">
                 <div className="lightbox-header">
                   <div className="user-avatar">
@@ -273,7 +272,7 @@ export default function Lifestyle() {
                     <span className="username">lawarna_aree</span>
                     <span className="caption-text">{lightbox.caption}</span>
                   </div>
-                  
+
                   <div className="comments-list">
                     {commentLoading ? (
                       <div className="comments-loading">Loading...</div>
@@ -292,7 +291,7 @@ export default function Lifestyle() {
 
                 <div className="lightbox-footer">
                   <div className="lightbox-actions">
-                    <button 
+                    <button
                       className={`action-btn ${likedPosts.includes(lightbox.id) ? 'liked' : ''}`}
                       onClick={(e) => handleLike(e, lightbox.id)}
                     >
@@ -305,20 +304,20 @@ export default function Lifestyle() {
                   <div className="likes-count">
                     {lightbox.likes || 0} likes
                   </div>
-                  
+
                   <form className="comment-form" onSubmit={handleCommentSubmit}>
-                    <input 
-                      type="text" 
-                      placeholder="Your name..." 
+                    <input
+                      type="text"
+                      placeholder="Your name..."
                       className="comment-name-input"
                       value={commentForm.name}
                       onChange={e => setCommentForm({ ...commentForm, name: e.target.value })}
                       required
                     />
                     <div className="comment-input-wrapper">
-                      <input 
-                        type="text" 
-                        placeholder="Add a comment..." 
+                      <input
+                        type="text"
+                        placeholder="Add a comment..."
                         value={commentForm.text}
                         onChange={e => setCommentForm({ ...commentForm, text: e.target.value })}
                         required

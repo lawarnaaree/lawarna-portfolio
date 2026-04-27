@@ -147,7 +147,32 @@ a.contact__info-value:hover { color: var(--c-accent); }
   color: var(--c-error);
 }
 
+@media (max-width: 1024px) {
+  .contact__grid {
+    gap: var(--s-2xl);
+  }
+}
+
 @media (max-width: 768px) {
-  .contact__grid { grid-template-columns: 1fr; }
-  .contact__form-row { grid-template-columns: 1fr; }
+  .contact__grid { 
+    grid-template-columns: 1fr; 
+    gap: var(--s-3xl);
+  }
+  .contact__intro {
+    font-size: var(--fs-md);
+    text-align: center;
+  }
+  .contact__info {
+    align-items: center;
+    text-align: center;
+  }
+  .contact__social-links {
+    justify-content: center;
+  }
+  .contact__form-row { 
+    grid-template-columns: 1fr; 
+  }
+  .contact__submit {
+    width: 100%; /* Full width button on mobile */
+  }
 }

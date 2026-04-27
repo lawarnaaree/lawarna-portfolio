@@ -26,16 +26,16 @@
   --f-body: 'Satoshi', sans-serif;
 
   /* Font Sizes (fluid) */
-  --fs-xs: clamp(0.625rem, 0.6vw, 0.75rem);
-  --fs-sm: clamp(0.75rem, 0.8vw, 0.875rem);
-  --fs-base: clamp(0.875rem, 1vw, 1rem);
-  --fs-md: clamp(1rem, 1.2vw, 1.25rem);
+  --fs-xs: clamp(0.7rem, 0.6vw, 0.75rem);
+  --fs-sm: clamp(0.8rem, 0.8vw, 0.875rem);
+  --fs-base: clamp(0.9rem, 1vw, 1rem);
+  --fs-md: clamp(1.1rem, 1.2vw, 1.25rem);
   --fs-lg: clamp(1.25rem, 1.8vw, 1.75rem);
   --fs-xl: clamp(1.75rem, 2.5vw, 2.5rem);
   --fs-2xl: clamp(2.25rem, 3.5vw, 3.5rem);
-  --fs-3xl: clamp(3rem, 5vw, 5rem);
-  --fs-4xl: clamp(4rem, 7vw, 7.5rem);
-  --fs-hero: clamp(4.5rem, 9vw, 10rem);
+  --fs-3xl: clamp(2.75rem, 5vw, 5rem);
+  --fs-4xl: clamp(3.5rem, 7vw, 7.5rem);
+  --fs-hero: clamp(3.5rem, 9vw, 10rem);
 
   /* Spacing */
   --s-xs: 0.25rem;
@@ -46,8 +46,8 @@
   --s-2xl: 3rem;
   --s-3xl: 4rem;
   --s-4xl: 6rem;
-  --s-section: clamp(4rem, 10vw, 8rem);
-  --s-gutter: clamp(1rem, 3vw, 2rem);
+  --s-section: clamp(3.5rem, 10vw, 8rem);
+  --s-gutter: clamp(1.25rem, 5vw, 2.5rem);
 
   /* Border Radius */
   --r-sm: 4px;

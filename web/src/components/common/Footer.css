@@ -98,14 +98,19 @@
 @media (max-width: 768px) {
   .footer__grid {
     grid-template-columns: 1fr;
-    gap: var(--s-xl);
+    gap: var(--s-2xl);
+    text-align: center;
+    padding: var(--s-2xl) 0;
+  }
+  .footer__col {
+    align-items: center;
   }
   .footer__cta-heading {
-    font-size: var(--fs-3xl);
+    font-size: clamp(2.5rem, 10vw, 4rem);
   }
   .footer__bottom {
-    flex-direction: column;
-    gap: var(--s-sm);
+    flex-direction: column-reverse;
+    gap: var(--s-md);
     text-align: center;
   }
 }
