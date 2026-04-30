@@ -466,8 +466,12 @@
     overflow-y: auto;
   }
   .lightbox-media {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: auto;
     height: auto;
+  }
+  .lightbox-media img, .lightbox-media video {
+    height: auto;
+    max-height: 85vh;
   }
   .lightbox-details {
     border-left: none;
