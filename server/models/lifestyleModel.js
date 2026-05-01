@@ -5,8 +5,33 @@ export const lifestyleModel = {
   // HIGHLIGHTS
   // ═══════════════════════════════════════════
   getHighlights: async () => {
-    const [rows] = await pool.query('SELECT * FROM lifestyle_highlights ORDER BY display_order ASC');
-    return rows;
+    // Fetch all highlights
+    const [highlights] = await pool.query('SELECT * FROM lifestyle_highlights ORDER BY display_order ASC');
+    
+    // Fetch all items for these highlights
+    if (highlights.length === 0) return [];
+    
+    const [items] = await pool.query('SELECT * FROM highlight_items ORDER BY highlight_id, order_index ASC');
+    
+    // Group items by highlight_id
+    const itemsMap = items.reduce((acc, item) => {
+      if (!acc[item.highlight_id]) acc[item.highlight_id] = [];
+      acc[item.highlight_id].push(item);
+      return acc;
+    }, {});
+    
+    // Attach items to highlights
+    return highlights.map(hl => ({
+      ...hl,
+      items: itemsMap[hl.id] || []
+    }));
+  },
+  getHighlight: async (id) => {
+    const [rows] = await pool.query('SELECT * FROM lifestyle_highlights WHERE id = ?', [id]);
+    if (rows.length === 0) return null;
+    
+    const [items] = await pool.query('SELECT * FROM highlight_items WHERE highlight_id = ? ORDER BY order_index ASC', [id]);
+    return { ...rows[0], items };
   },
   createHighlight: async (data) => {
     const { title, cover_image, media_type, display_order } = data;
@@ -30,6 +55,22 @@ export const lifestyleModel = {
   },
   deleteHighlight: async (id) => {
     const [result] = await pool.query('DELETE FROM lifestyle_highlights WHERE id = ?', [id]);
+    return result.affectedRows > 0;
+  },
+
+  // ═══════════════════════════════════════════
+  // HIGHLIGHT ITEMS
+  // ═══════════════════════════════════════════
+  addHighlightItem: async (data) => {
+    const { highlight_id, media_url, media_type, caption, order_index } = data;
+    const [result] = await pool.query(
+      'INSERT INTO highlight_items (highlight_id, media_url, media_type, caption, order_index) VALUES (?, ?, ?, ?, ?)',
+      [highlight_id, media_url, media_type || 'image', caption, order_index || 0]
+    );
+    return result.insertId;
+  },
+  deleteHighlightItem: async (id) => {
+    const [result] = await pool.query('DELETE FROM highlight_items WHERE id = ?', [id]);
     return result.affectedRows > 0;
   },
 

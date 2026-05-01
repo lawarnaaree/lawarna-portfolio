@@ -1,6 +1,7 @@
 import express from 'express';
 import { 
-  getHighlights, addHighlight, updateHighlight, deleteHighlight,
+  getHighlights, getHighlight, addHighlight, updateHighlight, deleteHighlight,
+  addHighlightItem, deleteHighlightItem,
   getPosts, getPost, addPost, updatePost, deletePost,
   likePost, unlikePost, getLikedPosts,
   getComments, addComment, deleteComment
@@ -13,9 +14,14 @@ const router = express.Router();
 
 // Highlights
 router.get('/highlights', apiReadLimiter, getHighlights);
+router.get('/highlights/:id', apiReadLimiter, getHighlight);
 router.post('/highlights', protect, upload.single('cover_image'), addHighlight);
 router.put('/highlights/:id', protect, upload.single('cover_image'), updateHighlight);
 router.delete('/highlights/:id', protect, deleteHighlight);
+
+// Highlight Items
+router.post('/highlights/:highlight_id/items', protect, upload.single('media'), addHighlightItem);
+router.delete('/highlights/items/:itemId', protect, deleteHighlightItem);
 
 // Posts
 router.get('/posts', apiReadLimiter, getPosts);

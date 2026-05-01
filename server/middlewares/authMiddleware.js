@@ -10,7 +10,7 @@ export const protect = async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1];
 
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Get admin from the token
       req.admin = await authModel.findById(decoded.id);

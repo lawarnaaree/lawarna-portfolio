@@ -5,6 +5,7 @@ import api from '../utils/api'
 import { getFileUrl } from '../utils/helpers'
 import { useFingerprint } from '../hooks/useFingerprint'
 import me from '../assets/phoksundo1.jpg'
+import StoryViewer from '../components/lifestyle/StoryViewer'
 import './Lifestyle.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -16,6 +17,7 @@ export default function Lifestyle() {
   const [likedPosts, setLikedPosts] = useState([])
   const pageRef = useRef(null)
   const [lightbox, setLightbox] = useState(null)
+  const [activeHighlight, setActiveHighlight] = useState(null)
   const [comments, setComments] = useState([])
   const [commentLoading, setCommentLoading] = useState(false)
   const [commentForm, setCommentForm] = useState({ name: '', text: '' })
@@ -30,23 +32,37 @@ export default function Lifestyle() {
       ]);
       setPosts(postsRes.data.data);
       setHighlights(highlightsRes.data.data);
-
-      // Fetch liked posts for this fingerprint
-      if (fingerprint) {
-        const likesRes = await api.get(`/lifestyle/likes?fingerprint=${fingerprint}`);
-        setLikedPosts(likesRes.data.data);
-      }
     } catch (error) {
       console.error('Failed to fetch lifestyle data:', error);
     } finally {
       setLoading(false);
     }
-  }, [fingerprint]);
+  }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchData();
+    const timeout = setTimeout(() => {
+      fetchData();
+    }, 0);
+    return () => clearTimeout(timeout);
   }, [fetchData]);
+
+  // Separate effect for likes once fingerprint is ready
+  useEffect(() => {
+    if (fingerprint) {
+      const fetchLikes = async () => {
+        try {
+          const res = await api.get(`/lifestyle/likes?fingerprint=${fingerprint}`);
+          setLikedPosts(res.data.data);
+        } catch (error) {
+          console.error('Failed to fetch likes', error);
+        }
+      };
+      const timeout = setTimeout(() => {
+        fetchLikes();
+      }, 0);
+      return () => clearTimeout(timeout);
+    }
+  }, [fingerprint]);
 
   // Load comments when lightbox opens
   useEffect(() => {
@@ -180,7 +196,12 @@ export default function Lifestyle() {
         {highlights.length > 0 && (
           <div className="ig-highlights">
             {highlights.map(hl => (
-              <div key={hl.id} className="ig-highlight" data-cursor="View">
+              <div 
+                key={hl.id} 
+                className="ig-highlight" 
+                data-cursor="View"
+                onClick={() => setActiveHighlight(hl)}
+              >
                 <div className="ig-highlight-ring">
                   {hl.media_type === 'video' ? (
                     <video src={getFileUrl(hl.cover_image)} muted playsInline />
@@ -331,6 +352,13 @@ export default function Lifestyle() {
             </div>
           </div>
         </div>
+      )}
+      
+      {activeHighlight && (
+        <StoryViewer 
+          highlight={activeHighlight} 
+          onClose={() => setActiveHighlight(null)} 
+        />
       )}
     </main>
   )

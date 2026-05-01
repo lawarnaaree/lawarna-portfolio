@@ -12,12 +12,14 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem('adminUser');
     const storedToken = localStorage.getItem('adminToken');
 
-    if (storedUser && storedToken) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setUser(JSON.parse(storedUser));
-    }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLoading(false);
+    const timeout = setTimeout(() => {
+      if (storedUser && storedToken) {
+        setUser(JSON.parse(storedUser));
+      }
+      setLoading(false);
+    }, 0);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   const login = async (email, password) => {

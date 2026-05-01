@@ -12,6 +12,19 @@ export const getHighlights = async (req, res, next) => {
   }
 };
 
+export const getHighlight = async (req, res, next) => {
+  try {
+    const data = await lifestyleModel.getHighlight(req.params.id);
+    if (!data) {
+      res.status(404);
+      throw new Error('Highlight not found');
+    }
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const addHighlight = async (req, res, next) => {
   try {
     const data = { ...req.body };
@@ -45,6 +58,34 @@ export const deleteHighlight = async (req, res, next) => {
   try {
     await lifestyleModel.deleteHighlight(req.params.id);
     res.status(200).json({ success: true, message: 'Highlight deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ═══════════════════════════════════════════
+// HIGHLIGHT ITEMS
+// ═══════════════════════════════════════════
+export const addHighlightItem = async (req, res, next) => {
+  try {
+    const { highlight_id } = req.params;
+    const data = { ...req.body, highlight_id };
+    if (req.file) {
+      data.media_url = `/uploads/${req.file.filename}`;
+    }
+    if (data.order_index) data.order_index = parseInt(data.order_index, 10);
+
+    const id = await lifestyleModel.addHighlightItem(data);
+    res.status(201).json({ success: true, data: { id, ...data } });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteHighlightItem = async (req, res, next) => {
+  try {
+    await lifestyleModel.deleteHighlightItem(req.params.itemId);
+    res.status(200).json({ success: true, message: 'Highlight item deleted' });
   } catch (error) {
     next(error);
   }
