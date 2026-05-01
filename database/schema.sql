@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS post_comments;
 DROP TABLE IF EXISTS lifestyle_posts;
 DROP TABLE IF EXISTS lifestyle_highlights;
 DROP TABLE IF EXISTS admins;
+DROP TABLE IF EXISTS highlight_items;
 
 CREATE TABLE admins(
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -145,4 +146,15 @@ CREATE TABLE post_comments(
     comment TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES lifestyle_posts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE highlight_items(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    highlight_id INT NOT NULL,
+    media_url VARCHAR(255) NOT NULL,
+    media_type ENUM('image', 'video') DEFAULT 'image',
+    caption TEXT,
+    order_index INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (highlight_id) REFERENCES lifestyle_highlights(id) ON DELETE CASCADE
 );
