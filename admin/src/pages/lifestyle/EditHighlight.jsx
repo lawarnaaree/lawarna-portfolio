@@ -29,7 +29,7 @@ const EditHighlight = () => {
   useEffect(() => {
     const fetchHighlight = async () => {
       try {
-        const response = await api.get(`/lifestyle/highlights/${id}`);
+        const response = await api.get(`/lifestyle/highlights/single/${id}`);
         const hl = response.data.data;
         
         setFormData({

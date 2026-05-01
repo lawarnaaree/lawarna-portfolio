@@ -14,7 +14,7 @@ const router = express.Router();
 
 // Highlights
 router.get('/highlights', apiReadLimiter, getHighlights);
-router.get('/highlights/:id', apiReadLimiter, getHighlight);
+router.get('/highlights/single/:id', apiReadLimiter, getHighlight);
 router.post('/highlights', protect, upload.single('cover_image'), addHighlight);
 router.put('/highlights/:id', protect, upload.single('cover_image'), updateHighlight);
 router.delete('/highlights/:id', protect, deleteHighlight);

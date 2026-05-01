@@ -14,8 +14,19 @@ export const getHighlights = async (req, res, next) => {
 
 export const getHighlight = async (req, res, next) => {
   try {
-    const data = await lifestyleModel.getHighlight(req.params.id);
+    const { id } = req.params;
+    console.log(`Fetching highlight with ID: ${id}`);
+    
+    // Explicitly parse ID as integer to be safe
+    const highlightId = parseInt(id, 10);
+    if (isNaN(highlightId)) {
+      res.status(400);
+      throw new Error('Invalid highlight ID');
+    }
+
+    const data = await lifestyleModel.getHighlight(highlightId);
     if (!data) {
+      console.warn(`Highlight not found for ID: ${highlightId}`);
       res.status(404);
       throw new Error('Highlight not found');
     }
