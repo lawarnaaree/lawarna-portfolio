@@ -2,43 +2,56 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-preloader);
+  overflow: hidden;
   pointer-events: all;
 }
 
 .preloader__overlay {
   position: absolute;
   inset: 0;
-  background: var(--c-bg);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #ff8d9b;
+  color: #080808;
+  will-change: transform;
 }
 
 .preloader__content {
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--s-md);
+  width: 100%;
+  padding: 0 1rem;
+  text-align: center;
+  perspective: 600px;
 }
 
 .preloader__name {
-  font-family: var(--f-heading);
-  font-size: var(--fs-2xl);
-  font-weight: 600;
-  color: var(--c-text);
-  letter-spacing: -0.02em;
-  opacity: 0;
+  max-width: 100%;
+  overflow: hidden;
+  color: #080808;
+  font-family: 'Rye', var(--f-heading), serif;
+  font-size: clamp(2rem, 10vw, 7rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+}
+
+.preloader__char {
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
 .preloader__title {
+  color: rgba(8, 8, 8, 0.72);
   font-family: var(--f-body);
   font-size: var(--fs-sm);
-  font-weight: 400;
-  color: var(--c-text-muted);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  opacity: 0;
+  letter-spacing: 0.18em;
 }
 
 .preloader__counter {
@@ -49,32 +62,38 @@
 }
 
 .preloader__count {
+  color: #080808;
   font-family: var(--f-heading);
   font-size: var(--fs-4xl);
   font-weight: 700;
-  color: var(--c-accent);
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .preloader__percent {
+  color: rgba(8, 8, 8, 0.72);
   font-family: var(--f-body);
   font-size: var(--fs-md);
-  color: var(--c-text-muted);
 }
 
 .preloader__progress {
   width: 200px;
   height: 2px;
-  background: var(--c-border);
-  border-radius: var(--r-full);
   overflow: hidden;
   margin-top: var(--s-sm);
+  border-radius: var(--r-full);
+  background: rgba(8, 8, 8, 0.2);
 }
 
 .preloader__bar {
   height: 100%;
-  background: var(--c-accent);
   border-radius: var(--r-full);
+  background: #080808;
   transition: width 0.1s linear;
+}
+
+@media (max-width: 380px) {
+  .preloader__name {
+    font-size: clamp(2rem, 10vw, 2.4rem);
+  }
 }

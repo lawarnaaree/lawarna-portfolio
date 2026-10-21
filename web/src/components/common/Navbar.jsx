@@ -73,24 +73,44 @@ export default function Navbar() {
 
   return (
     <>
-      <nav ref={navRef} className={`navbar ${hidden ? 'navbar--hidden' : ''} ${menuOpen ? 'navbar--open' : ''}`} id="main-nav">
+      <nav ref={navRef} className={`navbar ${location.pathname === '/' ? 'navbar--home' : ''} ${hidden ? 'navbar--hidden' : ''} ${menuOpen ? 'navbar--open' : ''}`} id="main-nav">
         <div className="navbar__inner">
+          {location.pathname === '/' && (
+            <div className="navbar__links navbar__links--home-left">
+              {NAV_LINKS.filter(link => ['/about', '/projects', '/journey'].includes(link.path)).map(link => (
+                <Link key={link.path} to={link.path} className="navbar__link">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
+
           <Link to="/" className="navbar__logo" data-cursor="Home">
             <span className="navbar__logo-text">LA</span>
             <span className="navbar__logo-dot" />
           </Link>
 
-          <div className="navbar__links">
-            {NAV_LINKS.filter(l => l.path !== '/').map(link => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`navbar__link ${location.pathname === link.path ? 'active' : ''}`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+          {location.pathname === '/' ? (
+            <div className="navbar__links navbar__links--home-right">
+              {NAV_LINKS.filter(link => ['/lifestyle', '/contact'].includes(link.path)).map(link => (
+                <Link key={link.path} to={link.path} className="navbar__link">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="navbar__links">
+              {NAV_LINKS.filter(link => link.path !== '/').map(link => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`navbar__link ${location.pathname === link.path ? 'active' : ''}`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
 
           <button
             className={`navbar__burger ${menuOpen ? 'is-open' : ''}`}

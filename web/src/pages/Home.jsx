@@ -9,7 +9,7 @@ import './Home.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function Home() {
+export default function Home({ isAppLoading }) {
   const mainRef = useRef(null)
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <main ref={mainRef} className="home-main">
       <div className="home-hero-sticky">
-        <HeroSection />
+        <HeroSection isAppLoading={isAppLoading} />
       </div>
       
       <div className="home-reveal-layer">

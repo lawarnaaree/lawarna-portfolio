@@ -7,6 +7,7 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100svh;
   z-index: 1;
   overflow: hidden;
   will-change: transform, opacity;
@@ -44,4 +45,15 @@
   background: var(--c-bg); /* Use the exact dark theme background */
   padding-top: var(--s-xl); /* Add some space before the Marquee */
   z-index: 11;
+}
+
+@media (max-width: 768px) {
+  .home-drip-mask {
+    top: -49px;
+    height: 50px;
+  }
+
+  .home-drip-mask svg {
+    height: 50px;
+  }
 }

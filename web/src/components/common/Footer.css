@@ -1,6 +1,12 @@
 .footer {
-  border-top: 1px solid var(--c-border);
+  --footer-ink: #17080b;
+  --footer-muted: #54212a;
+  --footer-line: rgba(23, 8, 11, 0.22);
+  --footer-hover: #6d1f2d;
+  border-top: 1px solid var(--footer-line);
   padding-bottom: var(--s-2xl);
+  color: var(--footer-ink);
+  background: #ff8d9b;
 }
 
 /* CTA Section */
@@ -11,7 +17,7 @@
 
 .footer__cta-label {
   font-size: var(--fs-sm);
-  color: var(--c-text-muted);
+  color: var(--footer-muted);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin-bottom: var(--s-lg);
@@ -22,17 +28,17 @@
   font-size: var(--fs-hero);
   font-weight: 700;
   line-height: 0.95;
-  color: var(--c-text);
+  color: var(--footer-ink);
   display: inline-block;
   transition: color 0.4s;
 }
 
 .footer__cta-heading:hover {
-  color: var(--c-accent);
+  color: var(--footer-hover);
 }
 
 .footer__cta-dot {
-  color: var(--c-accent);
+  color: var(--footer-hover);
 }
 
 /* Grid */
@@ -41,8 +47,8 @@
   grid-template-columns: repeat(3, 1fr);
   gap: var(--s-2xl);
   padding: var(--s-3xl) 0;
-  border-top: 1px solid var(--c-border);
-  border-bottom: 1px solid var(--c-border);
+  border-top: 1px solid var(--footer-line);
+  border-bottom: 1px solid var(--footer-line);
 }
 
 .footer__col {
@@ -55,7 +61,7 @@
   font-family: var(--f-body);
   font-size: var(--fs-sm);
   font-weight: 600;
-  color: var(--c-text-muted);
+  color: var(--footer-muted);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin-bottom: var(--s-md);
@@ -65,19 +71,25 @@
   font-family: var(--f-heading);
   font-size: var(--fs-md);
   font-weight: 500;
-  color: var(--c-text);
+  color: var(--footer-ink);
   transition: color 0.3s, transform 0.3s;
   display: inline-block;
 }
 
 .footer__link:hover {
-  color: var(--c-accent);
+  color: var(--footer-hover);
   transform: translateX(4px);
+}
+
+.footer__link:focus-visible,
+.footer__cta-heading:focus-visible {
+  outline: 2px solid var(--footer-ink);
+  outline-offset: 4px;
 }
 
 .footer__location {
   font-size: var(--fs-base);
-  color: var(--c-text-muted);
+  color: var(--footer-muted);
   margin-top: var(--s-sm);
 }
 
@@ -92,7 +104,7 @@
 .footer__copy,
 .footer__built {
   font-size: var(--fs-sm);
-  color: var(--c-text-muted);
+  color: var(--footer-muted);
 }
 
 @media (max-width: 768px) {

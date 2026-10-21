@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -27,6 +27,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
   const [loading, setLoading] = useState(true)
+  const [heroIntroReady, setHeroIntroReady] = useState(false)
   const location = useLocation()
   const lenisRef = useLenis()
 
@@ -40,22 +41,31 @@ export default function App() {
     setTimeout(() => ScrollTrigger.refresh(), 100)
   }, [location.pathname, lenisRef])
 
-  const handlePreloaderComplete = () => {
+  const handlePreloaderReveal = useCallback(() => {
+    setHeroIntroReady(true)
+  }, [])
+
+  const handlePreloaderComplete = useCallback(() => {
     setLoading(false)
     document.body.style.overflow = ''
-  }
+  }, [])
 
   return (
     <>
       <CustomCursor />
 
-      {loading && <Preloader onComplete={handlePreloaderComplete} />}
+      {loading && (
+        <Preloader
+          onReveal={handlePreloaderReveal}
+          onComplete={handlePreloaderComplete}
+        />
+      )}
 
       <div className={`app ${loading ? 'app--loading' : 'app--loaded'}`}>
         <Navbar />
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home isAppLoading={loading && !heroIntroReady} />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
