@@ -44,12 +44,11 @@ jobs:
       - name: Deploy Web to CPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          # FTP_SERVER must be a hostname only (no ftp:// or sftp:// prefix).
-          server: ${{ secrets.FTP_SERVER }}
+          server: ftp.lawarnaaree.com.np
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
-          port: ${{ secrets.FTP_PORT || '21' }}
+          protocol: ftps
+          port: 21
           timeout: 120000
           local-dir: ./web/dist/
           server-dir: public_html/
@@ -58,11 +57,11 @@ jobs:
       - name: Deploy Admin to CPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          server: ftp.lawarnaaree.com.np
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
-          port: ${{ secrets.FTP_PORT || '21' }}
+          protocol: ftps
+          port: 21
           timeout: 120000
           local-dir: ./admin/dist/
           server-dir: admin.lawarnaaree.com.np/
@@ -72,11 +71,11 @@ jobs:
       - name: Deploy Server to CPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          server: ftp.lawarnaaree.com.np
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
-          port: ${{ secrets.FTP_PORT || '21' }}
+          protocol: ftps
+          port: 21
           timeout: 120000
           local-dir: ./server/
           server-dir: api.lawarnaaree.com.np/
