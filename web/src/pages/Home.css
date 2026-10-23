@@ -28,7 +28,7 @@
   width: 100%;
   height: 100px;
   line-height: 0;
-  overflow: hidden;
+  overflow: visible;
   pointer-events: none; /* Let clicks pass through if needed */
   transform: translateY(1px); /* Subpixel rendering fix to prevent gaps */
 }
@@ -38,6 +38,19 @@
   width: calc(100% + 2px);
   height: 100px;
   transform: translateX(-1px); /* Subpixel fixing */
+  overflow: visible;
+}
+
+.home-curve-glow {
+  stroke: url(#home-curve-glow);
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.home-curve-glow--soft {
+  stroke-width: 36px;
+  opacity: 0.6;
+  filter: blur(18px);
 }
 
 .home-reveal-content {

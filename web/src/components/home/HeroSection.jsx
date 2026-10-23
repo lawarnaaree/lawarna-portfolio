@@ -128,6 +128,62 @@ export default function HeroSection({ isAppLoading }) {
   }, [])
 
   useEffect(() => {
+    const section = sectionRef.current
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    if (!section || reducedMotion || !finePointer) return
+
+    const logos = Array.from(section.querySelectorAll('[data-tech-index]'))
+    const radius = 150
+    const maxDisplacement = 48
+    let animationFrame
+
+    const resetLogos = () => {
+      logos.forEach((logo) => {
+        logo.style.setProperty('--tech-repel-x', '0px')
+        logo.style.setProperty('--tech-repel-y', '0px')
+      })
+    }
+
+    const updateRepulsion = (pointerX, pointerY) => {
+      logos.forEach((logo, index) => {
+        const bounds = logo.getBoundingClientRect()
+        const deltaX = bounds.left + bounds.width / 2 - pointerX
+        const deltaY = bounds.top + bounds.height / 2 - pointerY
+        const distance = Math.hypot(deltaX, deltaY)
+        const angle = distance === 0 ? (index / logos.length) * Math.PI * 2 : Math.atan2(deltaY, deltaX)
+        const displacement = Math.max(0, radius - distance) / radius * maxDisplacement
+
+        logo.style.setProperty('--tech-repel-x', `${Math.cos(angle) * displacement}px`)
+        logo.style.setProperty('--tech-repel-y', `${Math.sin(angle) * displacement}px`)
+      })
+    }
+
+    const onPointerMove = (event) => {
+      if (event.pointerType === 'touch') return
+      window.cancelAnimationFrame(animationFrame)
+      animationFrame = window.requestAnimationFrame(() => {
+        updateRepulsion(event.clientX, event.clientY)
+      })
+    }
+
+    const onPointerLeave = () => {
+      window.cancelAnimationFrame(animationFrame)
+      resetLogos()
+    }
+
+    section.addEventListener('pointermove', onPointerMove)
+    section.addEventListener('pointerleave', onPointerLeave)
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame)
+      section.removeEventListener('pointermove', onPointerMove)
+      section.removeEventListener('pointerleave', onPointerLeave)
+      resetLogos()
+    }
+  }, [])
+
+  useEffect(() => {
     if (loading || isAppLoading) return
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

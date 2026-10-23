@@ -41,6 +41,22 @@ export default function Home({ isAppLoading }) {
       <div className="home-reveal-layer">
         <div className="home-drip-mask">
           <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="home-curve-glow" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#ff8d9b" stopOpacity="0" />
+                <stop offset="34%" stopColor="#ff8d9b" stopOpacity="0" />
+                <stop offset="44%" stopColor="#ff8d9b" stopOpacity="0.7" />
+                <stop offset="50%" stopColor="#ff8d9b" stopOpacity="0.85" />
+                <stop offset="56%" stopColor="#ff8d9b" stopOpacity="0.7" />
+                <stop offset="66%" stopColor="#ff8d9b" stopOpacity="0" />
+                <stop offset="100%" stopColor="#ff8d9b" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <path
+              className="home-curve-glow home-curve-glow--soft"
+              d="M0,100 C240,100 240,0 720,0 C1200,0 1200,100 1440,100"
+              fill="none"
+            />
             {/* Liquid shape that fills from the curve down to the bottom */}
             <path d="M0,100 C240,100 240,0 720,0 C1200,0 1200,100 1440,100 L1440,120 L0,120 Z" fill="var(--c-bg)"></path>
           </svg>
